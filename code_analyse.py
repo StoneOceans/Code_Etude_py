@@ -53,7 +53,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('Redevance/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
