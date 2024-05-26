@@ -19,7 +19,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('/home/ajar/Téléchargements/testdebibli/RDVC-20230522(1).pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
   for i, ligne in enumerate(fichier):
     words = ligne.strip().split()  # Remove leading/trailing whitespaces before splitting
     if not words:  # Check for empty line
