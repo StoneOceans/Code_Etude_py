@@ -155,8 +155,3 @@ def parse_pln_file(file_path):
                 tableau_vol[f'final{etat}'] = words[1]
 
     return output
-
-# Example usage
-output_df = parse_pln_file('RDVC-20230522.pln')
-print(output_df)
-print(len(output_df))
