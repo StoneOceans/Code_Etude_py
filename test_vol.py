@@ -68,6 +68,9 @@ def test_parse_pln_file():
     # Call the function with the temporary file
     output_df = parse_pln_file('sample_test_file.pln')
 
+    # Debug print to check output dataframe
+    print(output_df)
+
     # Create the expected dataframe manually (you might need to adjust this based on your actual expected output)
     expected_data = {
         'callsignprevu': ['ETH575'],
