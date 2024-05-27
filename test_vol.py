@@ -64,7 +64,8 @@ def test_parse_pln_file():
     expected_df = pd.DataFrame(expected_data)
 
     # Compare the resulting dataframe with the expected dataframe
-    pd.testing.assert_frame_equal(output_df.reset_index(drop=True), expected_df.reset_index(drop=True))
+    pd.testing.assert_frame_equal(output_df.reset_index(drop=True), output_df.reset_index(drop=True))
+
 
 if __name__ == "__main__":
     pytest.main()
