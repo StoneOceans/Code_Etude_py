@@ -57,7 +57,7 @@ def parse_pln_file(file_path):
                     f'work{etat}': words[7]
                 })
                 if words[8][:2] != '??':
-                    tableau_vol[f'work1{etat}'] = words[8].strip().ljust(9)
+                    pass
             if words[0] == "21":
                 tableau_vol.update({
                     f'heuresdedep{etat}': words[1],
