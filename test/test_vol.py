@@ -1,6 +1,8 @@
 # test_vol.py
 
 import pytest
+import sys
+sys.path.append('..')
 from src.mains import parse_pln_file
 import pandas as pd
 
