@@ -27,4 +27,4 @@ jobs:
         pip install pandas numpy
 
     - name: Run script
-      run: python code_analyse.py
+      run: python vol.py
