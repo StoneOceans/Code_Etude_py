@@ -1,5 +1,5 @@
 import pytest
-from test.py import parse_pln_file
+from test.mains import parse_pln_file
 import pandas as pd
 
 def test_parse_pln_file():
