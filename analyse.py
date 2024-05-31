@@ -25,9 +25,6 @@ Original file is located at
 #Fichier STAN
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
-
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -54,7 +51,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -245,7 +242,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -438,7 +435,7 @@ output = pd.DataFrame()
 compteur = 0
 
 # Read the file and parse the data
-with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
         if words[0] == "02":
@@ -1022,148 +1019,3 @@ for plan in vols_sans_doublons:
     plan['comment'] = f"{' ' * 21}"
     pln=f"{num:04d}"+"F"+plan['time']+plan['dep']+plan['arrive']+plan['id']+plan['type_avion']+plan['operator']+plan['immatriculation']+plan['comment']+plan['jour']+plan['ifplid']+plan['infono']+plan['origine']+plan['modes']
     plns.append(pln)
-
-# Ouvrir le fichier en mode lecture
-fichier = open("/content/drive/MyDrive/DSNA/Redevances/M-LF-20230601-090935-001-CESNAC.txt", "r")
-# Lire toutes les lignes du fichier
-lignes = fichier.readlines()
-# Fermer le fichier
-fichier.close()
-# Créer un tableau vide
-tableau_cesnac = []
-tableau_said = []
-
-# Parcourir la liste des lignes
-for ligne in lignes:
-    # Extraire les 26 premiers caractères de la ligne
-    caracteres = ligne[9:26]
-    # Ajouter les caractères au tableau
-    tableau_cesnac.append(caracteres)
-
-for ligne in plns:
-    # Extraire les 26 premiers caractères de la ligne
-    caracteres = ligne[9:26]
-    # Ajouter les caractères au tableau
-    tableau_said.append(caracteres)
-
-print(tableau_said)
-
-if tableau_cesnac[1] == tableau_said[0]:
-  print('egalité')
-else:
-  print(tableau_cesnac[1],'!=',tableau_said[0])
-
-
-
-len(tableau_cesnac[1])
-
-len(tableau_said[0])
-
-# Créer une liste vide pour stocker les différences
-differences = []
-# Créer une variable pour compter le nombre de différences
-nombre_differences = 0
-
-for valeur1, valeur2 in zip(tableau_cesnac[2], tableau_said[1]):
-    # Comparer les valeurs à chaque indice
-    if valeur1 != valeur2:
-        # Il y a une différence
-        # Ajouter la paire de valeurs à la liste des différences
-        differences.append((valeur1, valeur2))
-        # Incrémenter le compteur de différences
-        nombre_differences += 1
-# Afficher le nombre de différences
-print(f"Il y a {nombre_differences} valeurs différentes entre les deux tableaux.")
-# Afficher la liste des différences
-print(f"Les valeurs différentes sont: {differences}")
-
-nombre_differences = 0
-# Parcourir le premier tableau
-for i,valeur1 in enumerate(tableau_cesnac):
-    # Vérifier si la valeur du premier tableau n'est pas dans le deuxième tableau
-    nb = nombre_differences
-    if valeur1 not in tableau_said:
-        # Il y a une différence
-        # Ajouter la valeur à la liste des différences
-        print('cette valeur n\'estpas dans Le fichier généré ',valeur1,' index : ',i)
-
-        # Incrémenter le compteur de différences
-        nombre_differences += 1
-    #if nb < nombre_differences:
-    #  print(lignes[i])
-print('nb duff = ',nombre_differences)
-
-for i, plan in enumerate(tableaux_vol):
-      if 'AUA900' in plan[0][0]['id']:
-        print(plan)
-
-for i, plan in enumerate(vols_sans_doublons):
-  if 'AFR11PM' in plan['id']:
-    print(plan)
-
-for i, plan in enumerate(plns):
-  if 'AUA900' in plan:
-    print(plan)
-
-# Ouvrir le fichier en mode lecture
-fichier = open("/content/drive/MyDrive/DSNA/Redevances/M-LF-20230601-090935-001-CESNAC.txt", "r")
-# Lire toutes les lignes du fichier
-lignes = fichier.readlines()
-# Fermer le fichier
-fichier.close()
-# Créer un tableau vide
-tableau_cesnac = []
-tableau_said = []
-
-# Parcourir la liste des lignes
-for ligne in lignes:
-    # Extraire les 26 premiers caractères de la ligne
-    caracteres = ligne[9:26]
-    # Ajouter les caractères au tableau
-    tableau_cesnac.append(caracteres)
-
-for ligne in plns:
-    # Extraire les 26 premiers caractères de la ligne
-    caracteres = ligne[9:26]
-    # Ajouter les caractères au tableau
-    tableau_said.append(caracteres)
-
-print(tableau_said)
-print(tableau_cesnac)
-
-len(tableau_said)
-
-nombre_differences = 0
-# Parcourir le premier tableau
-for i,valeur1 in enumerate(tableau_said):
-    # Vérifier si la valeur du premier tableau n'est pas dans le deuxième tableau
-    if valeur1 not in tableau_cesnac:
-        # Il y a une différence
-        # Ajouter la valeur à la liste des différences
-        print('cette valeur n\'estpas dans cesnac',valeur1,' index : ',i,'--- ligne complète',plns[i][:83])
-        # Incrémenter le compteur de différences
-        nombre_differences += 1
-print('nb duff = ',nombre_differences)
-
-import os
-from datetime import datetime
-
-# Définir le chemin du fichier
-chemin_fichier = '/content/drive/MyDrive/DSNA/Redevances/'
-
-# Obtenir la date et l'heure actuelles
-maintenant = datetime.now()
-date_heure_format = maintenant.strftime("%Y%m%d-%H%M%S-%f")[:-3]  # Supprimer les derniers 3 chiffres pour les millisecondes
-
-# Nom du fichier
-nom_fichier = f"M-LF-{date_heure_format}.TXT"
-
-# Chemin complet du fichier
-chemin_complet_fichier = os.path.join(chemin_fichier, nom_fichier)
-
-# Écrire le contenu de df_facture['transmission'] dans le fichier
-with open(chemin_complet_fichier, 'w') as f:
-  for pln in plns:
-    f.write(pln+ "\n")
-
-print(f"Le fichier {nom_fichier} a été créé avec succès !")
