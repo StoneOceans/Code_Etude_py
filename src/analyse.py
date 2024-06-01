@@ -25,6 +25,9 @@ Original file is located at
 #Fichier STAN
 """
 
+from google.colab import drive
+drive.mount('/content/drive')
+
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -51,7 +54,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('RDVC-20230522.pln', 'r') as fichier:
+with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -242,7 +245,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('RDVC-20230522.pln', 'r') as fichier:
+with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -281,6 +284,7 @@ with open('RDVC-20230522.pln', 'r') as fichier:
                 tableau_vol['dep_'+etat]= words[2]
                 tableau_vol['arr_'+etat]= words[3]
                 tableau_vol['numcautra_'+etat]= words[4]
+                tableau_vol['date_relative_'+etat]= words[5]
                 tableau_vol['typeavion_'+etat]= words[6]
                 tableau_vol['work_'+etat]= words[7]
                 if words[8][:2] == '??':
@@ -321,9 +325,9 @@ with open('RDVC-20230522.pln', 'r') as fichier:
                   #  prevu = False
                   #  termine = False
                   #  final = False
-                  tableau_vol['date_block'+etat] = words[7][:4] + words[7][6:]
+                  tableau_vol['date_block_'+etat] = words[7][:4] + words[7][6:]
                 else:
-                  tableau_vol['date_block'+etat] = words[7].strip().ljust(6)
+                  tableau_vol['date_block_'+etat] = words[7].strip().ljust(6)
 
 
 
@@ -338,7 +342,7 @@ with open('RDVC-20230522.pln', 'r') as fichier:
         if words[0] == "31":
                 tableau_vol['balise'+etat]= words[1]
         if words[0] == "32":
-                tableau_vol['listhour'+etat]= words[1]
+                tableau_vol['listhour_'+etat]= words[1]
         if words[0] == "33":
                 tableau_vol['listedesbalistes'+etat]= words[1]
         if words[0] == "36":
@@ -421,145 +425,65 @@ print(output)
 print(len(output))
 #vol['time'] = f"{heure:02d}{minute:02d}"
 
-#TESTTTTTTT
-import pandas as pd
+
+
 from datetime import datetime, timedelta
 
-# Initialize variables and data structures
-vol_prevu = []
-vol_fini = []
-vol_termine = []
-tableau_vol = {}
-tableaux_vol = []
-output = pd.DataFrame()
-compteur = 0
+def calculate_reference_datetime():
+    def adjust_time_based_on_relative_day():
+        # Initialize variables based on tableau_vol keys
+        time_str = tableau_vol.get('listhour_realise', None)
+        relative_day = tableau_vol.get('date_relative_realise', None)
 
-# Read the file and parse the data
-with open('RDVC-20230522.pln', 'r') as fichier:
-    for i, ligne in enumerate(fichier):
-        words = ligne.split()
-        if words[0] == "02":
-            date_str = words[1]
-            date_obj = datetime.strptime(date_str, "%d-%m-%Y")
-            date_fichier = date_obj.timetuple().tm_yday
-        if words[0] == "05":
-            if tableau_vol:
-                df_dictionary = pd.DataFrame([tableau_vol])
-                output = pd.concat([output, df_dictionary], ignore_index=True)
-            tableau_vol = {}
-        if words[0] == "11":
-            etat = 'prevu'
-        if words[0] == "12":
-            etat = 'final'
-        if words[0] == "13":
-            etat = 'realise'
-        if words[0] == "14":
-            etat = 'transaction'
-        if words[0] == "81":
-            pass
-        if words[0] == "20":
-            tableau_vol[f'callsign_{etat}'] = words[1]
-            tableau_vol[f'dep_{etat}'] = words[2]
-            tableau_vol[f'arr_{etat}'] = words[3]
-            tableau_vol[f'numcautra_{etat}'] = words[4]
-            tableau_vol[f'typeavion_{etat}'] = words[6]
-        if words[0] == "21":
-            tableau_vol[f'velocity_{etat}'] = words[3]
-            tableau_vol[f'EOBT_{etat}'] = words[4]
-        if words[0] == "22":
-            tableau_vol[f'reguledevol_{etat}'] = words[1]
-            tableau_vol[f'typedevol_{etat}'] = words[2]
-            if words[3][:2] == '??':
-                pass
+        # Check if necessary keys are present and adjust time
+        if time_str is not None and relative_day is not None:
+            hours, minutes = divmod(int(time_str), 100)
+            time_in_minutes = hours * 60 + minutes
+
+            if relative_day == -1:
+                time_in_minutes += 1440  # Add 1440 minutes (1 day)
+            elif relative_day == 1:
+                time_in_minutes -= 1440  # Subtract 1440 minutes (1 day)
+
+            return time_in_minutes
+        else:
+            return None
+
+    def calculate_departure_date():
+        # Initialize variables based on tableau_vol keys
+        archive_date_str = tableau_vol.get('date_block_realise', None)
+        relative_day = tableau_vol.get('date_relative_realise', None)
+
+        # Check if necessary keys are present and calculate date
+        if archive_date_str is not None and relative_day is not None:
+            archive_date = datetime.strptime(archive_date_str, "%d%m%Y")
+
+            if relative_day == -1:
+                return archive_date - timedelta(days=1)
+            elif relative_day == 1:
+                return archive_date + timedelta(days=1)
             else:
-                tableau_vol[f'IFPL_{etat}'] = words[3].strip().ljust(10)
-            tableau_vol[f'PLN_active_{etat}'] = words[4]
-            tableau_vol[f'PLN_annule_{etat}'] = words[5]
-            if '??' in words[7]:
-                pass
-            elif len(words[7]) == 8:
-                date_str = words[7]
-                date_obj = datetime.strptime(date_str, '%d%m%Y')
-                day_vol = date_obj.timetuple().tm_yday
-                tableau_vol[f'date_block_{etat}'] = words[7][:4] + words[7][6:]
-            else:
-                tableau_vol[f'date_block_{etat}'] = words[7].strip().ljust(6)
-        if words[0] == "23":
-            tableau_vol[f'adressemode_{etat}'] = np.NaN if "??" in words[4] else words[4]
-        if words[0] == "24":
-            tableau_vol[f'numeroPLNM_{etat}'] = words[1]
-            tableau_vol[f'FlightID_{etat}'] = words[2]
-        if words[0] == "31":
-            tableau_vol[f'balise_{etat}'] = words[1]
-        if words[0] == "32":
-            tableau_vol[f'listhour_{etat}'] = words[1]
-        if words[0] == "33":
-            tableau_vol[f'listedesbalistes_{etat}'] = words[1]
-        if words[0] == "36":
-            tableau_vol[f'indicateur_{etat}'] = words[1]
-        if words[0] == "41":
-            tableau_vol[f'carte_{etat}'] = words[1]
-        if words[0] == "71":
-            tableau_vol[f'centretraverse_{etat}'] = words[1]
-        if words[0] == "72":
-            tableau_vol[f'listederangpremier_{etat}'] = words[1]
-        if words[0] == "80":
-            tableau_vol[f'rangtransaction_{etat}'] = words[1]
-        if words[0] == "82":
-            tableau_vol['heure'] = words[1][:2]
-            tableau_vol['minute'] = words[1][3:]
-            tableau_vol[f'accusetrt_{etat}'] = words[1]
-            if "CCR:" in ligne:
-                compteur_CCr = 0
-                for word in words:
-                    compteur_CCr += 1
-                    if word == "CCR:":
-                        break
-                tableau_vol['ccr_arrival'] = words[compteur_CCr]
-        if words[0] == "84":
-            tableau_vol[f'final_{etat}'] = words[1]
+                return archive_date
+        else:
+            return None
 
+    # Initialize the reference_datetime variable
+    reference_datetime = None
 
+    # Call functions only if necessary keys are present in tableau_vol
+    if 'date_block_realise' in tableau_vol and 'date_relative_realise' in tableau_vol:
+        departure_date = calculate_departure_date()
+        recalculated_minutes = adjust_time_based_on_relative_day()
 
-# Function to calculate the actual departure date
-def calculate_departure_date(archive_date, relative_day):
-    if relative_day == -1:
-        return archive_date + timedelta(days=1)
-    elif relative_day == 1:
-        return archive_date - timedelta(days=1)
-    return archive_date
+        if departure_date is not None and recalculated_minutes is not None:
+            reference_datetime = departure_date + timedelta(minutes=recalculated_minutes)
 
-# Calculate the actual departure dates
-for index, row in output.iterrows():
-    for etat in ['final', 'termine']:
-        if f'date_block_{etat}' in row and pd.notna(row[f'date_block_{etat}']):
-            relative_day = int(row[f'date_block_{etat}'])
-            actual_departure_date = calculate_departure_date(date_obj, relative_day)
-            output.at[index, f'actual_departure_date_{etat}'] = actual_departure_date
-# Function to adjust times based on relative departure day
-def adjust_time_based_on_relative_day(time_str, relative_day):
-    # Convert the time string to minutes
-    hours, minutes = map(int, time_str.split(':'))
-    time_in_minutes = hours * 60 + minutes
+    return reference_datetime
 
-    # Adjust the time based on the relative day
-    if relative_day == -1:
-        time_in_minutes += 1440  # Add 1440 minutes (1 day)
-    elif relative_day == 1:
-        time_in_minutes -= 1440  # Subtract 1440 minutes (1 day)
+reference_datetime = calculate_reference_datetime()
+print(reference_datetime)
 
-    return time_in_minutes
-
-# Adjust times for 'final' and 'termine' records
-for index, row in output.iterrows():
-    for etat in ['final', 'termine']:
-        if f'date_block_{etat}' in row and pd.notna(row[f'date_block_{etat}']):
-            relative_day = int(row[f'date_block_{etat}'])
-            if f'listhour_{etat}' in row and pd.notna(row[f'listhour_{etat}']):
-                adjusted_time = adjust_time_based_on_relative_day(row[f'listhour_{etat}'], relative_day)
-                output.at[index, f'adjusted_listhour_{etat}'] = adjusted_time
-
-output.info()
+output.head()
 
 def filtrer_vols(dataframe,filedate):
   """
@@ -1019,3 +943,148 @@ for plan in vols_sans_doublons:
     plan['comment'] = f"{' ' * 21}"
     pln=f"{num:04d}"+"F"+plan['time']+plan['dep']+plan['arrive']+plan['id']+plan['type_avion']+plan['operator']+plan['immatriculation']+plan['comment']+plan['jour']+plan['ifplid']+plan['infono']+plan['origine']+plan['modes']
     plns.append(pln)
+
+# Ouvrir le fichier en mode lecture
+fichier = open("/content/drive/MyDrive/DSNA/Redevances/M-LF-20230601-090935-001-CESNAC.txt", "r")
+# Lire toutes les lignes du fichier
+lignes = fichier.readlines()
+# Fermer le fichier
+fichier.close()
+# Créer un tableau vide
+tableau_cesnac = []
+tableau_said = []
+
+# Parcourir la liste des lignes
+for ligne in lignes:
+    # Extraire les 26 premiers caractères de la ligne
+    caracteres = ligne[9:26]
+    # Ajouter les caractères au tableau
+    tableau_cesnac.append(caracteres)
+
+for ligne in plns:
+    # Extraire les 26 premiers caractères de la ligne
+    caracteres = ligne[9:26]
+    # Ajouter les caractères au tableau
+    tableau_said.append(caracteres)
+
+print(tableau_said)
+
+if tableau_cesnac[1] == tableau_said[0]:
+  print('egalité')
+else:
+  print(tableau_cesnac[1],'!=',tableau_said[0])
+
+
+
+len(tableau_cesnac[1])
+
+len(tableau_said[0])
+
+# Créer une liste vide pour stocker les différences
+differences = []
+# Créer une variable pour compter le nombre de différences
+nombre_differences = 0
+
+for valeur1, valeur2 in zip(tableau_cesnac[2], tableau_said[1]):
+    # Comparer les valeurs à chaque indice
+    if valeur1 != valeur2:
+        # Il y a une différence
+        # Ajouter la paire de valeurs à la liste des différences
+        differences.append((valeur1, valeur2))
+        # Incrémenter le compteur de différences
+        nombre_differences += 1
+# Afficher le nombre de différences
+print(f"Il y a {nombre_differences} valeurs différentes entre les deux tableaux.")
+# Afficher la liste des différences
+print(f"Les valeurs différentes sont: {differences}")
+
+nombre_differences = 0
+# Parcourir le premier tableau
+for i,valeur1 in enumerate(tableau_cesnac):
+    # Vérifier si la valeur du premier tableau n'est pas dans le deuxième tableau
+    nb = nombre_differences
+    if valeur1 not in tableau_said:
+        # Il y a une différence
+        # Ajouter la valeur à la liste des différences
+        print('cette valeur n\'estpas dans Le fichier généré ',valeur1,' index : ',i)
+
+        # Incrémenter le compteur de différences
+        nombre_differences += 1
+    #if nb < nombre_differences:
+    #  print(lignes[i])
+print('nb duff = ',nombre_differences)
+
+for i, plan in enumerate(tableaux_vol):
+      if 'AUA900' in plan[0][0]['id']:
+        print(plan)
+
+for i, plan in enumerate(vols_sans_doublons):
+  if 'AFR11PM' in plan['id']:
+    print(plan)
+
+for i, plan in enumerate(plns):
+  if 'AUA900' in plan:
+    print(plan)
+
+# Ouvrir le fichier en mode lecture
+fichier = open("/content/drive/MyDrive/DSNA/Redevances/M-LF-20230601-090935-001-CESNAC.txt", "r")
+# Lire toutes les lignes du fichier
+lignes = fichier.readlines()
+# Fermer le fichier
+fichier.close()
+# Créer un tableau vide
+tableau_cesnac = []
+tableau_said = []
+
+# Parcourir la liste des lignes
+for ligne in lignes:
+    # Extraire les 26 premiers caractères de la ligne
+    caracteres = ligne[9:26]
+    # Ajouter les caractères au tableau
+    tableau_cesnac.append(caracteres)
+
+for ligne in plns:
+    # Extraire les 26 premiers caractères de la ligne
+    caracteres = ligne[9:26]
+    # Ajouter les caractères au tableau
+    tableau_said.append(caracteres)
+
+print(tableau_said)
+print(tableau_cesnac)
+
+len(tableau_said)
+
+nombre_differences = 0
+# Parcourir le premier tableau
+for i,valeur1 in enumerate(tableau_said):
+    # Vérifier si la valeur du premier tableau n'est pas dans le deuxième tableau
+    if valeur1 not in tableau_cesnac:
+        # Il y a une différence
+        # Ajouter la valeur à la liste des différences
+        print('cette valeur n\'estpas dans cesnac',valeur1,' index : ',i,'--- ligne complète',plns[i][:83])
+        # Incrémenter le compteur de différences
+        nombre_differences += 1
+print('nb duff = ',nombre_differences)
+
+import os
+from datetime import datetime
+
+# Définir le chemin du fichier
+chemin_fichier = '/content/drive/MyDrive/DSNA/Redevances/'
+
+# Obtenir la date et l'heure actuelles
+maintenant = datetime.now()
+date_heure_format = maintenant.strftime("%Y%m%d-%H%M%S-%f")[:-3]  # Supprimer les derniers 3 chiffres pour les millisecondes
+
+# Nom du fichier
+nom_fichier = f"M-LF-{date_heure_format}.TXT"
+
+# Chemin complet du fichier
+chemin_complet_fichier = os.path.join(chemin_fichier, nom_fichier)
+
+# Écrire le contenu de df_facture['transmission'] dans le fichier
+with open(chemin_complet_fichier, 'w') as f:
+  for pln in plns:
+    f.write(pln+ "\n")
+
+print(f"Le fichier {nom_fichier} a été créé avec succès !")
