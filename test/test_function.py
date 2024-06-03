@@ -6,7 +6,6 @@ import unittest
 
 class TestVolData(unittest.TestCase):
 
-    def setUp(self):
         # This method will be used to set up the DataFrame for testing
         vol_prevu = []
         vol_fini = []
