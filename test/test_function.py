@@ -231,7 +231,7 @@ class TestVolData(unittest.TestCase):
 
     output['heure_de_reference'] = output.apply(calcul_HeureDeReference, axis=1)
 
-    pd.testing.assert_frame_equal(output['heure_de_reference']),output['heure_de_reference'])
+    pd.testing.assert_frame_equal(output['heure_de_reference'],output['heure_de_reference'])
 
 
 if __name__ == '__main__':
