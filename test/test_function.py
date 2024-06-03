@@ -210,17 +210,17 @@ with open('RDVC-20230522.pln', 'r') as fichier:
 
         
 
-    def test_same_final_and_prevu_LRQ267G(self):
+    def test_same_final_and_prevu_LRQ267G():
         # Rule: LRQ267G should have the same values for 'final' and 'prevu'
         lrq267g =output[output['callSign_prevu'] == 'LRQ267G']
         output.assertTrue(lrq267g['isFinal'].iloc[0] == lrq267g['isPrevu'].iloc[0])
 
-    def test_heure_de_reference_EZY37KC(self):
+    def test_heure_de_reference_EZY37KC():
         # Rule: EZY37KC should have an heure_de_reference equal to a float of -1440
         ezy37kc =output[output['callSign_prevu'] == 'EZY37KC']
         output.assertEqual(ezy37kc['heure_de_reference'].iloc[0], -1440.0)
 
-    def test_heure_de_reference_TRA79Y(self):
+    def test_heure_de_reference_TRA79Y():
         # Rule: TRA79Y should have an heure_de_reference equal to a float of 1720
         tra79y =output[output['callSign_prevu'] == 'TRA79Y']
         output.assertEqual(tra79y['heure_de_reference'].iloc[0], 1720.0)
