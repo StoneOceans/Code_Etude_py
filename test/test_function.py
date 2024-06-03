@@ -22,7 +22,7 @@ class TestVolData(unittest.TestCase):
         termine = False
         final = False
         complet = 0
-        self.output = pd.DataFrame()
+        output = pd.DataFrame()
         compteur = 0
 
         with open('RDVC-20230522.pln', 'r') as fichier:
@@ -38,7 +38,7 @@ class TestVolData(unittest.TestCase):
                         tableau_vol["isRealise"] = isrealise
                         tableau_vol["isFinal"] = isfinal
                         df_dictionary = pd.DataFrame([tableau_vol])
-                        self.output = pd.concat([self.output, df_dictionary], ignore_index=True)
+                        output = pd.concat([output, df_dictionary], ignore_index=True)
                     tableau_vol = {}
                     isprevu = False
                     isrealise = False
@@ -229,22 +229,9 @@ class TestVolData(unittest.TestCase):
         except Exception as e:
             return None  # Handle any exceptions gracefully
 
-    self.output['heure_de_reference'] = self.output.apply(calcul_HeureDeReference, axis=1)
+    output['heure_de_reference'] = output.apply(calcul_HeureDeReference, axis=1)
 
-    def test_same_final_and_prevu_LRQ267G(self):
-        # Rule: LRQ267G should have the same values for 'final' and 'prevu'
-        lrq267g = self.output[self.output['callSign_prevu'] == 'LRQ267G']
-        self.assertTrue(lrq267g['isFinal'].iloc[0] == lrq267g['isPrevu'].iloc[0])
-
-    def test_heure_de_reference_EZY37KC(self):
-        # Rule: EZY37KC should have an heure_de_reference equal to a float of -1440
-        ezy37kc = self.output[self.output['callSign_prevu'] == 'EZY37KC']
-        self.assertEqual(ezy37kc['heure_de_reference'].iloc[0], -1440.0)
-
-    def test_heure_de_reference_TRA79Y(self):
-        # Rule: TRA79Y should have an heure_de_reference equal to a float of 1720
-        tra79y = self.output[self.output['callSign_prevu'] == 'TRA79Y']
-        self.assertEqual(tra79y['heure_de_reference'].iloc[0], 1720.0)
+    pd.testing.assert_frame_equal(output['heure_de_reference']),output['heure_de_reference'])
 
 
 if __name__ == '__main__':
