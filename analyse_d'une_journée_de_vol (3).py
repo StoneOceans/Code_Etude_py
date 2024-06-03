@@ -36,7 +36,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -227,7 +227,7 @@ complet = 0
 output = pd.DataFrame()
 compteur = 0
 
-with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fichier:
+with open('RDVC-20230522.pln', 'r') as fichier:
 #with open('/content/drive/MyDrive/DSNA/Redevances/RDVC-20230522.pln', 'r') as fichier:
     for i, ligne in enumerate(fichier):
         words = ligne.split()
@@ -277,12 +277,12 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
 
 
         if words[0] == "20":
-                tableau_vol['callsign_'+etat]= words[1]
+                tableau_vol['callSign_'+etat]= words[1]
                 tableau_vol['dep_'+etat]= words[2]
                 tableau_vol['arr_'+etat]= words[3]
-                tableau_vol['numcautra_'+etat]= words[4]
-                tableau_vol['date_relative_'+etat]= words[5]
-                tableau_vol['typeavion_'+etat]= words[6]
+                tableau_vol['numCautra_'+etat]= words[4]
+                tableau_vol['dateRelative_'+etat]= words[5]
+                tableau_vol['typeAvion_'+etat]= words[6]
                 tableau_vol['work_'+etat]= words[7]
                 if words[8][:2] == '??':
                   #tableau_vol['work1'+etat] = f"{' ' * 9}"
@@ -292,20 +292,21 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
 
 
         if words[0] == "21":
-                tableau_vol['heuresdedep'+etat]= words[1]
-                tableau_vol['RFL'+etat]= words[2]
-                tableau_vol['vitesse'+etat]= words[3]
+                tableau_vol['heuresDep_'+etat]= words[1]
+                tableau_vol['RFL_'+etat]= words[2]
+                tableau_vol['vitesse_'+etat]= words[3]
                 tableau_vol['EOBT_'+etat]= words[4]
         if words[0] == "22":
-                tableau_vol['regledevol'+etat]= words[1]
-                tableau_vol['typedevol'+etat]= words[2]
+                tableau_vol['regleVol_'+etat]= words[1]
+                tableau_vol['typeVol_'+etat]= words[2]
+                tableau_vol['HeurePremiereBaliseActive_'+etat] = words[10]
                 if words[3][:2] == '??':
                   #tableau_vol['IFPL'+etat] = f"{' ' * 10}"
                   pass
                 else:
                   tableau_vol['IFPL_'+etat] = words[3].strip().ljust(10)
-                tableau_vol['PLN_active'+etat]= words[4]
-                tableau_vol['PLN_annule'+etat]= words[5]
+                tableau_vol['plnActive_'+etat]= words[4]
+                tableau_vol['plnAnnule_'+etat]= words[5]
                 if '??' in words[7]:
                   #tableau_vol['date_block'+etat] = f"{' ' * 6}"
                   pass
@@ -322,42 +323,42 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
                   #  prevu = False
                   #  termine = False
                   #  final = False
-                  tableau_vol['date_block_'+etat] = words[7][:4] + words[7][6:]
+                  tableau_vol['dateBlock_'+etat] = words[7][:4] + words[7][6:]
                 else:
-                  tableau_vol['date_block_'+etat] = words[7].strip().ljust(6)
+                  tableau_vol['dateBlock_'+etat] = words[7].strip().ljust(6)
 
 
 
         if words[0] == "23":
             if "??" in words[4]:
-                tableau_vol['adressemode_'+etat]= np.NaN
+                tableau_vol['adresseModeS_'+etat]= np.NaN
             else:
-                tableau_vol['adressemode_'+etat]= words[4]
+                tableau_vol['adresseModeS_'+etat]= words[4]
         if words[0] == "24":
                 tableau_vol['numeroPLNM'+etat]= words[1]
-                tableau_vol['FlightID'+etat]= words[2]
+                tableau_vol['flightID'+etat]= words[2]
         if words[0] == "31":
                 tableau_vol['balise'+etat]= words[1]
         if words[0] == "32":
-                tableau_vol['listhour_'+etat]= words[1]
+                tableau_vol['HeurePremiereBalise_'+etat]= words[1]
         if words[0] == "33":
-                tableau_vol['listedesbalistes'+etat]= words[1]
+                tableau_vol['listeBalises'+etat]= words[1]
         if words[0] == "36":
                 tableau_vol['indicateur'+etat]= words[1]
         if words[0] == "41":
                 tableau_vol['carte'+etat]= words[1]
         if words[0] == "71":
-                tableau_vol['centretraversé'+etat]= words[1]
+                tableau_vol['centreTraversé'+etat]= words[1]
         if words[0] == "72":
-                tableau_vol['listederangpremier'+etat]= words[1]
+                tableau_vol['listeRangPremier'+etat]= words[1]
         if words[0] == "80":
-                tableau_vol['rangtransaction'+etat]= words[1]
+                tableau_vol['rangTransaction'+etat]= words[1]
         if words[0] == "81":
             if len(words) >= 15:
                 parts = ligne.split("-")
                 last_word = parts[0].split()[-1]
                 if "ABI" in ligne:
-                  tableau_vol['typePLN']= "ABI"
+                  tableau_vol['typePln']= "ABI"
                 if "(FPL" in parts[0] or "(CHG)" in parts[0]:
                   tableau_vol['case7']= parts[1]
                   tableau_vol['case8']= parts[2]
@@ -369,7 +370,7 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
                     tableau_vol['case16']= parts[7]
                     tableau_vol['case18']= parts[8]
                     if tableau_vol['case18']== "RPL":
-                      tableau_vol['typePLN']="RPL"
+                      tableau_vol['typePln']="RPL"
                   else:
                     print(ligne)
                     compteur += 1
@@ -380,7 +381,7 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
                   tableau_vol['case10']= parts[4]
                   tableau_vol['case13']= parts[5]
                   tableau_vol['case15']= parts[6]
-                  tableau_vol['typePLN']= "APL"
+                  tableau_vol['typePln']= "APL"
                   if len(parts)>8:
                     tableau_vol['case16']= parts[7]
                     tableau_vol['case18']= parts[-1]
@@ -398,14 +399,14 @@ with open('/content/drive/MyDrive/Colab Notebooks/RDVC-20230522.pln', 'r') as fi
         if words[0] == "82":
                 tableau_vol['heure'] = (words[1][:2])
                 tableau_vol['minute'] = (words[1][3:])
-                tableau_vol['accusetrt'+etat]= words[1]
+                tableau_vol['accuseTrt'+etat]= words[1]
                 if "CCR:" in ligne:
-                  compteur_CCr = 0
+                  compteurCcr = 0
                   for word in words:
-                    compteur_CCr += 1
+                    compteurCcr += 1
                     if word == "CCR:":
                       break
-                  tableau_vol['ccr_arrival'] = words[compteur_CCr]
+                  tableau_vol['ccrArrival'] = words[compteurCcr]
         if words[0] == "84":
                 tableau_vol['final'+etat]= words[1]
 
@@ -417,41 +418,123 @@ print(output)
 print(len(output))
 #vol['time'] = f"{heure:02d}{minute:02d}"
 
-
+print(date_obj)
 
 output.info()
 
-output[output['callsign_prevu'] == 'EIN545']
+output[output['callSign_prevu'] == 'EIN545']
 
-print(len(output[output['listhour_realise'].isna()]))
+print(len(output[output['HeurePremiereBalise_realise'].isna()]))
 
-output['isRealise'].value_counts()
+output['dateRelative_final'].value_counts()
 
-output['listhour_realise'] = output['listhour_realise'].astype(int)
+output[output['dateRelative_final'] == 1]
 
-output['date_relative_realise']= output['date_relative_realise'].astype(int)
 
-def calcul_hr(row):
-    if row['date_relative_realise'] == 0:
-      return row['listhour_realise']
-    if row['date_relative_realise'] == 1:
-      return row['listhour_realise'] - 1440
-    if row['date_relative_realise'] == -1:
-      return row['listhour_realise'] + 1440
 
-output['heure_de_reference'] = output.apply(calcul_hr, axis=1)
+output['HeurePremiereBaliseActiv__realise'] = output['HeurePremiereBaliseActive_realise'].astype('Int64')
+print(output['HeurePremiereBaliseActive_realise'])
 
-output[output['callsign_prevu'] == 'LRQ267G']
+output['HeurePremiereBaliseActive_final'] = output['HeurePremiereBaliseActive_final'].astype('Int64')
+print(output['HeurePremiereBaliseActive_final'])
 
-print(len(output[output['heure_de_reference'] >= 1440][['callsign_prevu','date_relative_realise','listhour_realise','heure_de_reference']]))
+output['HeurePremiereBalise_final'] = output['HeurePremiereBalise_final'].astype('Int64')
 
-output['date_relative_realise'].value_counts()
+output['dateRelative_realise'] = output['dateRelative_realise'].astype('Int64')
+print(output['dateRelative_realise'])
 
-output[output['date_relative_realise']== "1"]
+output['dateRelative_final'] = output['dateRelative_final'].astype('Int64')
+print(output['dateRelative_final'])
 
-output[output['callsign_prevu']== "TRA79Y"]
+len(output['dateRelative_realise'])
 
-output[output['callsign_prevu']== "160B"]
+def calcul_HeureDeReference(row):
+    try:
+      if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
+        if not pd.isna(row['HeurePremiereBaliseActive_realise']) and not pd.isnull(row['HeurePremiereBaliseActive_realise']):
+          if row['dateRelative_realise'] == 0:
+                    return int(row['HeurePremiereBaliseActive_realise'])
+          elif row['dateRelative_realise'] == 1:
+                    return int(row['HeurePremiereBaliseActive_realise']) - 1440
+          elif row['dateRelative_realise'] == -1:
+                    return int(row['HeurePremiereBaliseActive_realise']) + 1440
+        elif not pd.isna(row['HeurePremiereBaliseActive_final']) and not pd.isnull(row['HeurePremiereBaliseActive_final']):
+          if row['dateRelative_realise'] == 0:
+                    return int(row['HeurePremiereBaliseActive_final'])
+          elif row['dateRelative_realise'] == 1:
+                    return int(row['HeurePremiereBaliseActive_final']) - 1440
+          elif row['dateRelative_realise'] == -1:
+                    return int(row['HeurePremiereBaliseActive_final']) + 1440
+        elif not pd.isna(row['HeurePremiereBalise_final']) and not pd.isnull(row['HeurePremiereBalise_final']):
+                if row['dateRelative_realise'] == 0:
+                    return int(row['HeurePremiereBalise_final'])
+                elif row['dateRelative_realise'] == 1:
+                    return int(row['HeurePremiereBalise_final']) - 1440
+                elif row['dateRelative_realise'] == -1:
+                    return int(row['HeurePremiereBalise_final']) + 1440
+      elif not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
+        if not pd.isna(row['HeurePremiereBaliseActive_realise']) and not pd.isnull(row['HeurePremiereBaliseActive_realise']):
+          if row['dateRelative_final'] == 0:
+                    return int(row['HeurePremiereBaliseActive_realise'])
+          elif row['dateRelative_final'] == 1:
+                    return int(row['HeurePremiereBaliseActive_realise']) - 1440
+          elif row['dateRelative_final'] == -1:
+                    return int(row['HeurePremiereBaliseActive_realise']) + 1440
+        elif not pd.isna(row['HeurePremiereBaliseActive_final']) and not pd.isnull(row['HeurePremiereBaliseActive_final']):
+            if row['dateRelative_final'] == 0:
+                    return int(row['HeurePremiereBaliseActive_final'])
+            elif row['dateRelative_final'] == 1:
+                    return int(row['HeurePremiereBaliseActive_final']) - 1440
+            elif row['dateRelative_final'] == -1:
+                    return int(row['HeurePremiereBaliseActive_final']) + 1440
+        elif not pd.isna(row['HeurePremiereBalise_final']) and not pd.isnull(row['HeurePremiereBalise_final']):
+                if row['dateRelative_final'] == 0:
+                    return int(row['HeurePremiereBalise_final'])
+                elif row['dateRelative_final'] == 1:
+                    return int(row['HeurePremiereBalise_final']) - 1440
+                elif row['dateRelative_final'] == -1:
+                    return int(row['HeurePremiereBalise_final']) + 1440
+    except Exception as e:
+        return None  # Handle any exceptions gracefully
+
+output['heure_de_reference'] = output.apply(calcul_HeureDeReference, axis=1)
+print(output['heure_de_reference'].describe())
+
+df_test= output[output['heure_de_reference'] >= 1440]
+
+print(df_test[['callSign_prevu','dep_prevu','isRealise','heure_de_reference','dateRelative_realise', 'HeurePremiereBaliseActive_realise','HeurePremiereBaliseActive_final']])
+
+df_test= output[output['heure_de_reference'] <= 0]
+
+print(df_test[['callSign_prevu','isRealise','heure_de_reference','dateRelative_realise', 'HeurePremiereBaliseActive_realise','HeurePremiereBaliseActive_final']])
+
+from datetime import datetime, timedelta
+def calcul_DateDeReference(row):
+    try:
+      if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
+          if row['dateRelative_realise'] == 0:
+                    return date_obj
+          elif row['dateRelative_realise'] == 1:
+                    return date_obj - timedelta(days=1)
+          elif row['dateRelative_realise'] == -1:
+                    return date_obj + timedelta(days=1)
+      elif not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
+          if row['dateRelative_final'] == 0:
+                    return date_obj
+          elif row['dateRelative_final'] == 1:
+                    return date_obj - timedelta(days=1)
+          elif row['dateRelative_final'] == -1:
+                    return date_obj + timedelta(days=1)
+
+    except Exception as e:
+        return None
+
+output['date_de_reference'] = output.apply(calcul_DateDeReference, axis=1)
+print(output['date_de_reference'].describe())
+
+output[output['callSign_prevu']== "TRA79Y"]
+
+output[output['callSign_prevu']== "160B"]
 
 def filtrer_vols(dataframe,filedate):
   """
@@ -516,13 +599,13 @@ print(len(tableaux_vol))
 
 output.info()
 
-df_stan_facture = df_stan_facture.sort_values(by='callsign_prevu', ascending=True)
+df_stan_facture = df_stan_facture.sort_values(by='callSign_prevu', ascending=True)
 
 df_stan_facture = df_stan_facture.reset_index()
 
 df_stan_facture.head()
 
-df_stan_facture[df_stan_facture['callsign_final']=='THY54SK']
+df_stan_facture[df_stan_facture['callSign_final']=='THY54SK']
 
 def generate_transmission_ecmonth(df):
   """
@@ -559,7 +642,7 @@ def generate_transmission_ecmonth(df):
     transmission += row['minute']
     transmission += row['dep_prevu']
     transmission += row['arr_prevu']
-    transmission += row['callsign_prevu'].strip().ljust(9)
+    transmission += row['callSign_prevu'].strip().ljust(9)
     transmission += 'Z'
     transmission += row['typeavion_prevu'].strip().ljust(7)
     transmission += 'Z  '
