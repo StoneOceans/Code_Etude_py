@@ -79,8 +79,8 @@ class TestVolData(unittest.TestCase):
         self.output['dateRelative_realise'] = self.output['dateRelative_realise'].astype('Int64')
         self.output['dateRelative_final'] = self.output['dateRelative_final'].astype('Int64')
 
-         pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_realise'], self.output['HeurePremiereBaliseActive_realise'])
-         pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_final'], self.output['HeurePremiereBaliseActive_final'])
+pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_realise'], self.output['HeurePremiereBaliseActive_realise'])
+pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_final'], self.output['HeurePremiereBaliseActive_final'])
 
 if __name__ == '__main__':
     unittest.main()
