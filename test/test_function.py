@@ -4,11 +4,7 @@ import numpy as np
 import unittest
 
 class TestVolData(unittest.TestCase):
-
-    def setUp(self):
         # This method will be used to set up the DataFrame for testing
-        self.output = pd.DataFrame()
-
         with open('RDVC-20230522.pln', 'r') as fichier:
             tableau_vol = {}
             for ligne in fichier:
@@ -23,7 +19,7 @@ class TestVolData(unittest.TestCase):
                         tableau_vol["isRealise"] = isrealise
                         tableau_vol["isFinal"] = isfinal
                         df_dictionary = pd.DataFrame([tableau_vol])
-                        self.output = pd.concat([self.output, df_dictionary], ignore_index=True)
+                        output = pd.concat([output, df_dictionary], ignore_index=True)
                     tableau_vol = {}
                     isprevu = False
                     isrealise = False
@@ -73,7 +69,7 @@ class TestVolData(unittest.TestCase):
                     tableau_vol['numeroPLNM_' + etat] = words[1]
                     tableau_vol['flightID_' + etat] = words[2]
 
-        self.output['HeurePremiereBaliseActive_realise'] = self.output['HeurePremiereBaliseActive_realise'].astype('Int64')
+        output['HeurePremiereBaliseActive_realise'] = output['HeurePremiereBaliseActive_realise'].astype('Int64')
         self.output['HeurePremiereBaliseActive_final'] = self.output['HeurePremiereBaliseActive_final'].astype('Int64')
         self.output['HeurePremiereBalise_final'] = self.output['HeurePremiereBalise_final'].astype('Int64')
         self.output['dateRelative_realise'] = self.output['dateRelative_realise'].astype('Int64')
