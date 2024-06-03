@@ -4,8 +4,24 @@ import numpy as np
 import unittest
 
 class TestVolData(unittest.TestCase):
-        # This method will be used to set up the DataFrame for testing
-        with open('RDVC-20230522.pln', 'r') as fichier:
+         
+            vol_prevu = []
+            vol_fini = []
+            vol_termine = []
+            tableau_vol={}
+            tableaux_vol=[]
+            iter =0
+            flag82=False
+            hneg = False
+            compt82 = 0
+            num81 = 0
+            prevu = False
+            termine=False
+            final=False
+            complet = 0
+            output = pd.DataFrame()
+            compteur = 0
+            with open('RDVC-20230522.pln', 'r') as fichier:
             tableau_vol = {}
             for ligne in fichier:
                 words = ligne.split()
