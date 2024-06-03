@@ -1,98 +1,73 @@
-from datetime import datetime
+# test_vol.py
+
+import pytest
+import sys
+sys.path.append('..')
+from src.mains import parse_pln_file
 import pandas as pd
-import numpy as np
-import unittest
 
-class TestVolData(unittest.TestCase):
-         
-            vol_prevu = []
-            vol_fini = []
-            vol_termine = []
-            tableau_vol={}
-            tableaux_vol=[]
-            iter =0
-            flag82=False
-            hneg = False
-            compt82 = 0
-            num81 = 0
-            prevu = False
-            termine=False
-            final=False
-            complet = 0
-            output = pd.DataFrame()
-            compteur = 0
-            with open('RDVC-20230522.pln', 'r') as fichier:
-            tableau_vol = {}
-            for ligne in fichier:
-                words = ligne.split()
-                if words[0] == "02":
-                    date_str = words[1]
-                    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
-                    date_fichier = date_obj.timetuple().tm_yday
-                if words[0] == "05":
-                    if tableau_vol:
-                        tableau_vol["isPrevu"] = isprevu
-                        tableau_vol["isRealise"] = isrealise
-                        tableau_vol["isFinal"] = isfinal
-                        df_dictionary = pd.DataFrame([tableau_vol])
-                        output = pd.concat([output, df_dictionary], ignore_index=True)
-                    tableau_vol = {}
-                    isprevu = False
-                    isrealise = False
-                    isfinal = False
+def test_parse_pln_file():
+    """Tests the parse_pln_file function with sample data."""
+    
+    # Prepare a sample file content
+    sample_content = """
+    05
+    11
+    20 ETH575 KORD HAAB 9273 -1 B788 0000 ETAOU 0
+    21 -525 350 485 -525
+    22 I S AA47735238 0 0 FPL 21052023 SANDY 0 0 21-05-2023 00:00
+    23 0 0 0 ??????
+    24 -1 ???????? 0
+    2R LASAT390
+    31 SANDY MOTOX RUCAC LESDO RANUX ETINO NEBAX LASAT DEVDI
+    32 -105 -162 -161 -149 -142 -138 -131 -128 -64
+    33 370 370 370 370 370 370 370 370 370
+    36 0 0 0 0 0 0 0 0 0
+    41 HN YR HE GL 5M
+    71 EGGG REIM ZURI
+    72 1 2 5
+    13
+    """
 
-                if words[0] == "11":
-                    etat = 'prevu'
-                    isprevu = True
-                if words[0] == "12":
-                    etat = 'realise'
-                    isrealise = True
-                if words[0] == "13":
-                    if len(words) > 1 and words[1] == "=":
-                        for key in list(tableau_vol.keys()):
-                            if '_prevu' in key:
-                                tableau_vol[key.replace('_prevu', '_final')] = tableau_vol[key]
-                    etat = 'final'
-                    isfinal = True
+    # Write the sample content to a temporary file
+    with open('sample_test_file.pln', 'w') as file:
+        file.write(sample_content)
 
-                if words[0] == "20":
-                    tableau_vol['callSign_' + etat] = words[1]
-                    tableau_vol['dep_' + etat] = words[2]
-                    tableau_vol['arr_' + etat] = words[3]
-                    tableau_vol['numCautra_' + etat] = words[4]
-                    tableau_vol['dateRelative_' + etat] = words[5]
-                    tableau_vol['typeAvion_' + etat] = words[6]
-                    tableau_vol['work_' + etat] = words[7]
+    # Call the function with the temporary file
+    output_df = parse_pln_file('sample_test_file.pln')
 
-                if words[0] == "21":
-                    tableau_vol['heuresDep_' + etat] = words[1]
-                    tableau_vol['RFL_' + etat] = words[2]
-                    tableau_vol['vitesse_' + etat] = words[3]
-                    tableau_vol['EOBT_' + etat] = words[4]
+    # Create the expected dataframe for one row
+    expected_data = {
+        'callsignprevu': ['ETH575'],
+        'depprevu': ['KORD'],
+        'arrprevu': ['HAAB'],
+        'numcautraprevu': ['9273'],
+        'typeavionprevu': ['B788'],
+        'workprevu': ['ETAOU'],
+        'heuresdedepprevu': ['-525'],
+        'RFLprevu': ['350'],
+        'vitesseprevu': ['485'],
+        'EOBTprevu': ['-525'],
+        'regledevolprevu': ['I'],
+        'typedevolprevu': ['S'],
+        'IFPLprevu': ['AA47735238'],
+        'PLN_activeprevu': ['0'],
+        'PLN_annuleprevu': ['0'],
+        'date_blockprevu': ['21052023'],
+        'baliseprevu': ['SANDY'],
+        'listhourprevu': ['-105'],
+        'listedesbalistesprevu': ['370'],
+        'indicateurprevu': ['0'],
+        'carteprevu': ['HN'],
+        'centretraverséprevu': ['EGGG'],
+        'listederangpremierprevu': ['1']
+    }
 
-                if words[0] == "22":
-                    tableau_vol['regleVol_' + etat] = words[1]
-                    tableau_vol['typeVol_' + etat] = words[2]
-                    tableau_vol['HeurePremiereBaliseActive_' + etat] = words[10]
+    expected_df = pd.DataFrame(expected_data)
 
-                if words[0] == "23":
-                    if "??" in words[4]:
-                        tableau_vol['adresseModeS_' + etat] = np.NaN
-                    else:
-                        tableau_vol['adresseModeS_' + etat] = words[4]
+    # Compare the resulting dataframe with the expected dataframe
+    pd.testing.assert_frame_equal(output_df.reset_index(drop=True), output_df.reset_index(drop=True))
 
-                if words[0] == "24":
-                    tableau_vol['numeroPLNM_' + etat] = words[1]
-                    tableau_vol['flightID_' + etat] = words[2]
 
-        output['HeurePremiereBaliseActive_realise'] = output['HeurePremiereBaliseActive_realise'].astype('Int64')
-        self.output['HeurePremiereBaliseActive_final'] = self.output['HeurePremiereBaliseActive_final'].astype('Int64')
-        self.output['HeurePremiereBalise_final'] = self.output['HeurePremiereBalise_final'].astype('Int64')
-        self.output['dateRelative_realise'] = self.output['dateRelative_realise'].astype('Int64')
-        self.output['dateRelative_final'] = self.output['dateRelative_final'].astype('Int64')
-
-pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_realise'], self.output['HeurePremiereBaliseActive_realise'])
-pd.testing.assert_frame_equal(self.output['HeurePremiereBaliseActive_final'], self.output['HeurePremiereBaliseActive_final'])
-
-if __name__ == '__main__':
-    unittest.main()
+if __name__ == "__main__":
+    pytest.main()
