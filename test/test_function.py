@@ -14,6 +14,20 @@ def test_heure_de_reference():
     assert heure_de_reference_1 == 1720.0, "heure_de_reference for EIN545 is not equal to 902"
     assert heure_de_reference0 == 0.0, "heure_de_reference for EIN545 is not equal to 902"
 
+def test_calcul_HeureDeReference():
+    data = {
+        'dateRelative_realise': [0, 1, -1, 0, 1, -1],
+        'HeurePremiereBaliseActive_realise': [900, 3160, 0, np.nan, np.nan, np.nan],
+        'HeurePremiereBaliseActive_final': [np.nan, np.nan, np.nan, 1440, 2880, -1440],
+        'HeurePremiereBalise_final': [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
+        'dateRelative_final': [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
+        'expected': [900, 1720, 1440, 1440, 1440, 0]
+    }
+    df = pd.DataFrame(data)
+    df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
+    
+    for _, row in df.iterrows():
+        assert row['heure_de_reference'] == row['expected'], f"Expected {row['expected']} but got {row['heure_de_reference']}"
 
 if __name__ == "__main__":
     pytest.main()
