@@ -150,7 +150,7 @@ def visualize_data(transmissions_count):
     fig.show()
 
 def main():
-    df = read_and_process_file(RDVC-20230522.pln)
+    df = read_and_process_file('RDVC-20230522.pln')
     df = convert_and_calculate(df)
     df_filtre, transmissions_count = filter_and_analyze(df)
     visualize_data(transmissions_count)
