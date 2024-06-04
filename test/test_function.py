@@ -65,6 +65,11 @@ def calcul_HeureDeReference(row):
                     return int(row['HeurePremiereBalise_final']) + 1440
     except Exception as e:
         return None  # Handle any exceptions gracefully
+def test_calcul_HeureDeReference():
+    output = read_and_process_file("RDVC-20230522.pln")
 
+    for row in output:
+        result = calcul_HeureDeReference(row)
+        assert result == row['expected'], f"Failed for row: {row}"
 if __name__ == "__main__":
     pytest.main()
