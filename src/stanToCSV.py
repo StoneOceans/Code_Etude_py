@@ -24,101 +24,186 @@ def read_and_process_file(fichier_a_deposee):
     compteurCcr = 0
     
     with open(fichier_a_deposee, 'r') as fichier:
-        for ligne in fichier:
-            words = ligne.split()
-            if words[0] == "02":
-                date_obj = datetime.strptime(words[1], "%d-%m-%Y")
-                date_fichier = date_obj.timetuple().tm_yday
-            elif words[0] == "05":
-                if tableau_vol:
-                    df_dictionary = pd.DataFrame([tableau_vol])
-                    output = pd.concat([output, df_dictionary], ignore_index=True)
-                tableau_vol = {}
-                isprevu = isrealise = isfinal = False
-            elif words[0] == "11":
-                etat = 'prevu'
+        for i, ligne in enumerate(fichier):
+        words = ligne.split()
+        if words[0] == "02":
+          date_str = words[1]
+          date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+          date_fichier = date_obj.timetuple().tm_yday
+        if words[0] == "05":
+          if tableau_vol:
+            tableau_vol["isPrevu"]= isprevu
+            tableau_vol["isRealise"] = isrealise
+            tableau_vol["isFinal"] = isfinal
+            #output = pd.concat([output, pd.DataFrame.from_dict(tableau_vol)], ignore_index=True)
+            df_dictionary = pd.DataFrame([tableau_vol])
+            output = pd.concat([output, df_dictionary], ignore_index=True)
+          tableau_vol = {}
+          isprevu = False
+          isrealise= False
+          isfinal= False
+
+
+          balise = ''
+          hneg = False
+          flag82=False
+          etat = ''
+        if words[0] == "11":
+                etat='prevu'
                 isprevu = True
-            elif words[0] == "12":
+        if words[0] == "12":
                 etat = 'realise'
-                isrealise = True
-            elif words[0] == "13":
-                etat = 'final'
-                isfinal = True
-            elif words[0] == "20":
-                tableau_vol.update({
-                    f'callSign_{etat}': words[1],
-                    f'dep_{etat}': words[2],
-                    f'arr_{etat}': words[3],
-                    f'numCautra_{etat}': words[4],
-                    f'dateRelative_{etat}': words[5],
-                    f'typeAvion_{etat}': words[6],
-                    f'work_{etat}': words[7],
-                    f'work1_{etat}': words[8].strip().ljust(9) if words[8][:2] != '??' else None
-                })
-            elif words[0] == "21":
-                tableau_vol.update({
-                    f'heuresDep_{etat}': words[1],
-                    f'RFL_{etat}': words[2],
-                    f'vitesse_{etat}': words[3],
-                    f'EOBT_{etat}': words[4]
-                })
-            elif words[0] == "22":
-                tableau_vol.update({
-                    f'regleVol_{etat}': words[1],
-                    f'typeVol_{etat}': words[2],
-                    f'HeurePremiereBaliseActive_{etat}': words[10],
-                    f'IFPL_{etat}': words[3].strip().ljust(10) if words[3][:2] != '??' else None,
-                    f'plnActive_{etat}': words[4],
-                    f'plnAnnule_{etat}': words[5],
-                    f'dateBlock_{etat}': words[7][:4] + words[7][6:] if len(words[7]) == 8 else words[7].strip().ljust(6)
-                })
-            elif words[0] == "23":
-                tableau_vol[f'adresseModeS_{etat}'] = words[4] if "??" not in words[4] else np.NaN
-            elif words[0] == "24":
-                tableau_vol.update({
-                    f'numeroPLNM_{etat}': words[1],
-                    f'flightID_{etat}': words[2]
-                })
-            elif words[0] == "31":
-                tableau_vol[f'balise_{etat}'] = words[1]
-            elif words[0] == "32":
-                tableau_vol[f'HeurePremiereBalise_{etat}'] = words[1]
-            elif words[0] == "33":
-                tableau_vol[f'listeBalises_{etat}'] = words[1]
-            elif words[0] == "36":
-                tableau_vol[f'indicateur_{etat}'] = words[1]
-            elif words[0] == "41":
-                tableau_vol[f'carte_{etat}'] = words[1]
-            elif words[0] == "71":
-                tableau_vol[f'centreTraversé_{etat}'] = words[1]
-            elif words[0] == "72":
-                tableau_vol[f'listeRangPremier_{etat}'] = words[1]
-            elif words[0] == "80":
-                tableau_vol[f'rangTransaction_{etat}'] = words[1]
-            elif words[0] == "81":
-                parts = ligne.split("-")
-                if len(parts) > 1:
-                    tableau_vol.update({
-                        'case7': parts[1],
-                        'case8': parts[2],
-                        'case9': parts[3],
-                        'case10': parts[4],
-                        'case13': parts[5],
-                        'case15': parts[6],
-                        'case16': parts[7] if len(parts) > 8 else None,
-                        'case18': parts[8] if len(parts) > 8 else None
-                    })
+                isrealise= True
+
+        if words[0] == "13":
+             if len(words) > 1 and words[1] == "=":
+                for key in list(tableau_vol.keys()):
+                    if '_prevu' in key:
+                        tableau_vol[key.replace('_prevu', '_final')] = tableau_vol[key]
+             etat='final'
+             isfinal= True
+
+
+        if words[0] == "14":
+                etat='transaction'
+
+        if words[0] == "81":
+                pass
+
+
+        if words[0] == "20":
+                tableau_vol['callSign_'+etat]= words[1]
+                tableau_vol['dep_'+etat]= words[2]
+                tableau_vol['arr_'+etat]= words[3]
+                tableau_vol['numCautra_'+etat]= words[4]
+                tableau_vol['dateRelative_'+etat]= words[5]
+                tableau_vol['typeAvion_'+etat]= words[6]
+                tableau_vol['work_'+etat]= words[7]
+                if words[8][:2] == '??':
+                  #tableau_vol['work1'+etat] = f"{' ' * 9}"
+                  pass
                 else:
-                    tableau_vol['typePln'] = 'ABI' if "ABI" in ligne else ('RPL' if parts[8] == "RPL" else "APL")
-            elif words[0] == "82":
-                tableau_vol.update({
-                    'heure': words[1][:2],
-                    'minute': words[1][3:],
-                    f'accuseTrt_{etat}': words[1],
-                    'ccrArrival': words[compteurCcr + 1] if "CCR:" in ligne else None
-                })
-            elif words[0] == "84":
-                tableau_vol[f'final_{etat}'] = words[1]
+                  tableau_vol['work1'+etat] = words[8].strip().ljust(9)
+
+
+        if words[0] == "21":
+                tableau_vol['heuresDep_'+etat]= words[1]
+                tableau_vol['RFL_'+etat]= words[2]
+                tableau_vol['vitesse_'+etat]= words[3]
+                tableau_vol['EOBT_'+etat]= words[4]
+        if words[0] == "22":
+                tableau_vol['regleVol_'+etat]= words[1]
+                tableau_vol['typeVol_'+etat]= words[2]
+                tableau_vol['HeurePremiereBaliseActive_'+etat] = words[10]
+                if words[3][:2] == '??':
+                  #tableau_vol['IFPL'+etat] = f"{' ' * 10}"
+                  pass
+                else:
+                  tableau_vol['IFPL_'+etat] = words[3].strip().ljust(10)
+                tableau_vol['plnActive_'+etat]= words[4]
+                tableau_vol['plnAnnule_'+etat]= words[5]
+                if '??' in words[7]:
+                  #tableau_vol['date_block'+etat] = f"{' ' * 6}"
+                  pass
+                elif len(words[7])==8:
+                  date_str = words[7]
+
+                  # Convertir la chaîne en un objet datetime
+                  date_obj = datetime.strptime(date_str, '%d%m%Y')
+
+                  # Obtenir le numéro du jour dans l'année
+                  day_vol = date_obj.timetuple().tm_yday
+                  #if day_vol != date_fichier:
+                  #  print('*********************Attention 22 ebot differend du jour du fichier', vol['id'])
+                  #  prevu = False
+                  #  termine = False
+                  #  final = False
+                  tableau_vol['dateBlock_'+etat] = words[7][:4] + words[7][6:]
+                else:
+                  tableau_vol['dateBlock_'+etat] = words[7].strip().ljust(6)
+
+
+
+        if words[0] == "23":
+            if "??" in words[4]:
+                tableau_vol['adresseModeS_'+etat]= np.NaN
+            else:
+                tableau_vol['adresseModeS_'+etat]= words[4]
+        if words[0] == "24":
+                tableau_vol['numeroPLNM'+etat]= words[1]
+                tableau_vol['flightID'+etat]= words[2]
+        if words[0] == "31":
+                tableau_vol['balise'+etat]= words[1]
+        if words[0] == "32":
+                tableau_vol['HeurePremiereBalise_'+etat]= words[1]
+        if words[0] == "33":
+                tableau_vol['listeBalises'+etat]= words[1]
+        if words[0] == "36":
+                tableau_vol['indicateur'+etat]= words[1]
+        if words[0] == "41":
+                tableau_vol['carte'+etat]= words[1]
+        if words[0] == "71":
+                tableau_vol['centreTraversé'+etat]= words[1]
+        if words[0] == "72":
+                tableau_vol['listeRangPremier'+etat]= words[1]
+        if words[0] == "80":
+                tableau_vol['rangTransaction'+etat]= words[1]
+        if words[0] == "81":
+            if len(words) >= 15:
+                parts = ligne.split("-")
+                last_word = parts[0].split()[-1]
+                if "ABI" in ligne:
+                  tableau_vol['typePln']= "ABI"
+                if "(FPL" in parts[0] or "(CHG)" in parts[0]:
+                  tableau_vol['case7']= parts[1]
+                  tableau_vol['case8']= parts[2]
+                  tableau_vol['case9']= parts[3]
+                  tableau_vol['case10']= parts[4]
+                  tableau_vol['case13']= parts[5]
+                  tableau_vol['case15']= parts[6]
+                  if len(parts)>8:
+                    tableau_vol['case16']= parts[7]
+                    tableau_vol['case18']= parts[8]
+                    if tableau_vol['case18']== "RPL":
+                      tableau_vol['typePln']="RPL"
+                  else:
+                    print(ligne)
+                    compteur += 1
+                elif "(APL" in parts[0]:
+                  tableau_vol['case7']= parts[1]
+                  tableau_vol['case8']= parts[2]
+                  tableau_vol['case9']= parts[3]
+                  tableau_vol['case10']= parts[4]
+                  tableau_vol['case13']= parts[5]
+                  tableau_vol['case15']= parts[6]
+                  tableau_vol['typePln']= "APL"
+                  if len(parts)>8:
+                    tableau_vol['case16']= parts[7]
+                    tableau_vol['case18']= parts[-1]
+                  else:
+                    print(ligne)
+                    compteur += 1
+
+
+
+
+
+
+
+
+        if words[0] == "82":
+                tableau_vol['heure'] = (words[1][:2])
+                tableau_vol['minute'] = (words[1][3:])
+                tableau_vol['accuseTrt'+etat]= words[1]
+                if "CCR:" in ligne:
+                  compteurCcr = 0
+                  for word in words:
+                    compteurCcr += 1
+                    if word == "CCR:":
+                      break
+                  tableau_vol['ccrArrival'] = words[compteurCcr]
+        if words[0] == "84":
+                tableau_vol['final'+etat]= words[1]
 
     return output
 
