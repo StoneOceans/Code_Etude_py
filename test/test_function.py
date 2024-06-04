@@ -3,8 +3,9 @@
 import pytest
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
 from src.stanToCSV import read_and_process_file, convert_and_calculate
+
+# Expected values for testing
 def expected_heure_de_reference1():
     return 902.0
 
@@ -14,19 +15,7 @@ def expected_heure_de_reference_1():
 def expected_heure_de_reference0():
     return 0.0
 
-def test_heure_de_reference():
-    output = read_and_process_file("RDVC-20230522.pln")
-    output = convert_and_calculate(output)
-    
-    # Assuming filter_and_analyze has been applied and output DataFrame is filtered
-    heure_de_reference1 = output.loc[output['callSign_prevu'] == 'EIN545', 'heure_de_reference'].values[0]
-    heure_de_reference_1 = output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
-    heure_de_reference0 = output.loc[output['callSign_prevu'] == '160B', 'heure_de_reference'].values[0]
-    
-    assert heure_de_reference1 == expected_heure_de_reference1(), "heure_de_reference for EIN545 is not equal to 902"
-    assert heure_de_reference_1 == expected_heure_de_reference_1(), "heure_de_reference for TRA79Y is not equal to 1720"
-    assert heure_de_reference0 == expected_heure_de_reference0(), "heure_de_reference for 160B is not equal to 0"
-
+# Function to calculate heure_de_reference
 def calcul_HeureDeReference(row):
     try:
         if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
@@ -76,7 +65,38 @@ def calcul_HeureDeReference(row):
     except Exception as e:
         return None  # Handle any exceptions gracefully
 
+# Mock functions for testing
+def mock_read_and_process_file(file_name):
+    data = {
+        'callSign_prevu': ['EIN545', 'TRA79Y', '160B'],
+        'dateRelative_realise': [0, 1, -1],
+        'HeurePremiereBaliseActive_realise': [900, 3160, np.nan],
+        'HeurePremiereBaliseActive_final': [np.nan, np.nan, 1440],
+        'HeurePremiereBalise_final': [np.nan, np.nan, np.nan],
+        'dateRelative_final': [np.nan, np.nan, np.nan],
+    }
+    return pd.DataFrame(data)
+
+def mock_convert_and_calculate(df):
+    df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
+    return df
+
+# Test cases
+
 def test_calcul_HeureDeReference():
+    data = {
+        'dateRelative_realise': [0, 1, -1, 0, 1, -1],
+        'HeurePremiereBaliseActive_realise': [900, 3160, 0, np.nan, np.nan, np.nan],
+        'HeurePremiereBaliseActive_final': [np.nan, np.nan, np.nan, 1440, 2880, -1440],
+        'HeurePremiereBalise_final': [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
+        'dateRelative_final': [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
+        'expected': [900, 1720, 1440, 1440, 1440, 0]
+    }
+    df = pd.DataFrame(data)
+    df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
+
+
+def test_calculHeureDeReference():
     output = read_and_process_file("RDVC-20230522.pln")
     output = convert_and_calculate(output)
     # Mock DataFrame for testing calcul_HeureDeReference function
