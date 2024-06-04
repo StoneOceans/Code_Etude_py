@@ -144,10 +144,6 @@ def filter_and_analyze(df):
     df_filtre.sort_values(by=['heure_de_reference'], inplace=True)
     return df_filtre, transmissions_count
 
-def visualize_data(transmissions_count):
-    fig = go.Figure(data=[go.Pie(labels=transmissions_count.index, values=transmissions_count.values)])
-    fig.update_layout(title_text='Répartition des Transmissions')
-    fig.show()
 
 def main():
     df = read_and_process_file('RDVC-20230522.pln')
