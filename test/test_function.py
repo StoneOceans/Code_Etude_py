@@ -1,7 +1,7 @@
 # test_script.py
 
 import pytest
-from my_script import read_and_process_file, convert_and_calculate, filter_and_analyze
+from src.stanToCSV import read_and_process_file, convert_and_calculate, filter_and_analyze
 
 def test_heure_de_reference():
     output = read_and_process_file("plan_de_vol.txt")
