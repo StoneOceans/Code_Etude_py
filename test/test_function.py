@@ -4,72 +4,69 @@ import numpy as np
 import pytest
 from src.stanToCSV import read_and_process_file, convert_and_calculate
 
+output = read_and_process_file("RDVC-20230522.pln")
+output = convert_and_calculate(output)
 def test_heure_de_reference():
     output = read_and_process_file("RDVC-20230522.pln")
     output = convert_and_calculate(output)
     # Assuming filter_and_analyze has been applied and output DataFrame is filtered
-    heure_de_reference1 = output.loc[output['callSign_prevu'] == 'EIN545', 'heure_de_reference'].values[0]
-    heure_de_reference_1=output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
-    heure_de_reference0=output.loc[output['callSign_prevu'] == '160B', 'heure_de_reference'].values[0]
-    assert heure_de_reference1 == 902.0, "heure_de_reference for EIN545 is not equal to 902"
-    assert heure_de_reference_1 == 1720.0, "heure_de_reference for EIN545 is not equal to 902"
-    assert heure_de_reference0 == 0.0, "heure_de_reference for EIN545 is not equal to 902"
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    heure_de_reference=output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
+    heure_de_reference0=output.loc[output['callSign_prevu'] == '60B', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+    assert heure_de_reference0 == 0.0, "heure_de_reference for EZY37KC is not equal to -1440"
 
-
+def test_dateRelative_realise_HeurePremiereBaliseActive_realise_jourdarchive():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_realise_HeurePremiereBaliseActive_realise_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_realise_HeurePremiereBaliseActive_realise_veille():
+    heure_de_reference=output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 1720.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_realise_HeurePremiereBaliseActive_final_jourdarchive():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_realise_HeurePremiereBaliseActive_final_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_realise_HeurePremiereBaliseActive_final_veille():
+    heure_de_reference=output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 1720.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_realise_HeurePremiereBalise_final_jourdarchive():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_realise_HeurePremiereBalise_final_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_realise_HeurePremiereBalise_final_veille():
+    heure_de_reference=output.loc[output['callSign_prevu'] == 'TRA79Y', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 1720.0, "heure_de_reference for SWR9G is not equal to 75"
+def test_dateRelative_final_HeurePremiereBaliseActive_realise_jourdarchive():
     
-def calcul_HeureDeReference(row):
-    try:
-        if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
-            if not pd.isna(row['HeurePremiereBaliseActive_realise']) and not pd.isnull(row['HeurePremiereBaliseActive_realise']):
-                if row['dateRelative_realise'] == 0:
-                    return int(row['HeurePremiereBaliseActive_realise'])
-                elif row['dateRelative_realise'] == 1:
-                    return int(row['HeurePremiereBaliseActive_realise']) - 1440
-                elif row['dateRelative_realise'] == -1:
-                    return int(row['HeurePremiereBaliseActive_realise']) + 1440
-            elif not pd.isna(row['HeurePremiereBaliseActive_final']) and not pd.isnull(row['HeurePremiereBaliseActive_final']):
-                if row['dateRelative_realise'] == 0:
-                    return int(row['HeurePremiereBaliseActive_final'])
-                elif row['dateRelative_realise'] == 1:
-                    return int(row['HeurePremiereBaliseActive_final']) - 1440
-                elif row['dateRelative_realise'] == -1:
-                    return int(row['HeurePremiereBaliseActive_final']) + 1440
-            elif not pd.isna(row['HeurePremiereBalise_final']) and not pd.isnull(row['HeurePremiereBalise_final']):
-                if row['dateRelative_realise'] == 0:
-                    return int(row['HeurePremiereBalise_final'])
-                elif row['dateRelative_realise'] == 1:
-                    return int(row['HeurePremiereBalise_final']) - 1440
-                elif row['dateRelative_realise'] == -1:
-                    return int(row['HeurePremiereBalise_final']) + 1440
-        elif not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
-            if not pd.isna(row['HeurePremiereBaliseActive_realise']) and not pd.isnull(row['HeurePremiereBaliseActive_realise']):
-                if row['dateRelative_final'] == 0:
-                    return int(row['HeurePremiereBaliseActive_realise'])
-                elif row['dateRelative_final'] == 1:
-                    return int(row['HeurePremiereBaliseActive_realise']) - 1440
-                elif row['dateRelative_final'] == -1:
-                    return int(row['HeurePremiereBaliseActive_realise']) + 1440
-            elif not pd.isna(row['HeurePremiereBaliseActive_final']) and not pd.isnull(row['HeurePremiereBaliseActive_final']):
-                if row['dateRelative_final'] == 0:
-                    return int(row['HeurePremiereBaliseActive_final'])
-                elif row['dateRelative_final'] == 1:
-                    return int(row['HeurePremiereBaliseActive_final']) - 1440
-                elif row['dateRelative_final'] == -1:
-                    return int(row['HeurePremiereBaliseActive_final']) + 1440
-            elif not pd.isna(row['HeurePremiereBalise_final']) and not pd.isnull(row['HeurePremiereBalise_final']):
-                if row['dateRelative_final'] == 0:
-                    return int(row['HeurePremiereBalise_final'])
-                elif row['dateRelative_final'] == 1:
-                    return int(row['HeurePremiereBalise_final']) - 1440
-                elif row['dateRelative_final'] == -1:
-                    return int(row['HeurePremiereBalise_final']) + 1440
-    except Exception as e:
-        return None  # Handle any exceptions gracefully
-def test_calcul_HeureDeReference():
-    output = read_and_process_file("RDVC-20230522.pln")
-
-    for row in output:
-        result = calcul_HeureDeReference(row)
-        assert result == row['expected'], f"Failed for row: {row}"
-if __name__ == "__main__":
-    pytest.main()
+def test_dateRelative_final_HeurePremiereBaliseActive_realise_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_final_HeurePremiereBaliseActive_realise_veille():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 365.0, "heure_de_reference for AFR903A is not equal to 365"
+def test_dateRelative_final_HeurePremiereBaliseActive_final_jourdarchive():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 365.0, "heure_de_reference for AFR903A is not equal to 365"
+def test_dateRelative_final_HeurePremiereBaliseActive_final_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_final_HeurePremiereBaliseActive_final_veille():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EFW2865', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
+def test_dateRelative_final_HeurePremiereBalise_final_jourdarchive():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 365.0, "heure_de_reference for AFR903A is not equal to 365"
+def test_dateRelative_final_HeurePremiereBalise_final_lendemain():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
+    assert heure_de_reference == -1440.0, "heure_de_reference for EZY37KC is not equal to -1440"
+def test_dateRelative_final_HeurePremiereBalise_final_veille():
+    heure_de_reference = output.loc[output['callSign_prevu'] == 'EFW2865', 'heure_de_reference'].values[0]
+    assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
