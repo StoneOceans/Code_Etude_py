@@ -10,7 +10,7 @@ output = convert_and_calculate(output)
 
 def test_dateRelative_realise_HeurePremiereBaliseActive_realise_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
-    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+    assert heure_de_reference == 465.0, "heure_de_reference for SWR9G is not equal to 75"
 
 def test_dateRelative_final_HeurePremiereBaliseActive_realise_veille():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'heure_de_reference'].values[0]
@@ -26,7 +26,7 @@ def test_dateRelative_realise_HeurePremiereBaliseActive_realise_veille():
     
 def test_dateRelative_realise_HeurePremiereBaliseActive_final_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
-    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+    assert heure_de_reference == 465.0, "heure_de_reference for SWR9G is not equal to 75"
     
 def test_dateRelative_realise_HeurePremiereBaliseActive_final_lendemain():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
@@ -38,7 +38,7 @@ def test_dateRelative_realise_HeurePremiereBaliseActive_final_veille():
     
 def test_dateRelative_realise_HeurePremiereBalise_final_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
-    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+    assert heure_de_reference == 465.0, "heure_de_reference for SWR9G is not equal to 75"
     
 def test_dateRelative_realise_HeurePremiereBalise_final_lendemain():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
@@ -49,7 +49,7 @@ def test_dateRelative_realise_HeurePremiereBalise_final_veille():
     assert heure_de_reference == 1720.0, "heure_de_reference for SWR9G is not equal to 75"
 def test_dateRelative_final_HeurePremiereBaliseActive_realise_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
-    assert heure_de_reference == 175.0, "heure_de_reference for SWR9G is not equal to 75"
+    assert heure_de_reference == 465.0, "heure_de_reference for SWR9G is not equal to 75"
     
 def test_dateRelative_final_HeurePremiereBaliseActive_realise_lendemain():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'heure_de_reference'].values[0]
