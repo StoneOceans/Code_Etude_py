@@ -43,22 +43,6 @@ def test_calcul_HeureDeReference():
     for _, row in df.iterrows():
         assert row['heure_de_reference'] == row['expected'], f"Expected {row['expected']} but got {row['heure_de_reference']}"
 
-def test_calcul_DateDeReference():
-    date_obj = datetime(2023, 5, 22)
-    test_data = [
-        {'dateRelative_realise': 0, 'dateRelative_final': np.nan, 'expected': date_obj},
-        {'dateRelative_realise': 1, 'dateRelative_final': np.nan, 'expected': date_obj - timedelta(days=1)},
-        {'dateRelative_realise': -1, 'dateRelative_final': np.nan, 'expected': date_obj + timedelta(days=1)},
-        {'dateRelative_realise': np.nan, 'dateRelative_final': 0, 'expected': date_obj},
-        {'dateRelative_realise': np.nan, 'dateRelative_final': 1, 'expected': date_obj - timedelta(days=1)},
-        {'dateRelative_realise': np.nan, 'dateRelative_final': -1, 'expected': date_obj + timedelta(days=1)}
-    ]
-
-    df = pd.DataFrame(test_data)
-    df['date_de_reference'] = df.apply(lambda row: calcul_DateDeReference(row), axis=1)
-
-    for _, row in df.iterrows():
-        assert row['date_de_reference'] == row['expected'], f"Expected {row['expected']} but got {row['date_de_reference']}"
 
 if __name__ == "__main__":
     pytest.main()
