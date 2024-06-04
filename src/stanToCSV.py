@@ -3,8 +3,25 @@ import numpy as np
 from datetime import datetime, timedelta
 
 def read_and_process_file(fichier_a_deposee):
+    vol_prevu = []
+    vol_fini = []
+    vol_termine = []
+    tableau_vol={}
+    tableaux_vol=[]
+    iter =0
+    flag82=False
+    hneg = False
+    compt82 = 0
+    num81 = 0
+    prevu = False
+    termine=False
+    final=False
+    complet = 0
+    output = pd.DataFrame()
+    compteur = 0
     output = pd.DataFrame()
     tableau_vol = {}
+    compteurCcr = 0
     
     with open(fichier_a_deposee, 'r') as fichier:
         for ligne in fichier:
