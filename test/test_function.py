@@ -4,8 +4,7 @@ import pytest
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from src.stanToCSV import read_and_process_file, convert_and_calculate, calcul_HeureDeReference, calcul_DateDeReference
-
+from src.stanToCSV import read_and_process_file, convert_and_calculate
 def expected_heure_de_reference1():
     return 902.0
 
