@@ -55,7 +55,7 @@ def test_calcul_DateDeReference():
     ]
 
     df = pd.DataFrame(test_data)
-    df['date_de_reference'] = df.apply(lambda row: calcul_DateDeReference(row, date_obj), axis=1)
+    df['date_de_reference'] = df.apply(lambda row: calcul_DateDeReference(row), axis=1)
 
     for _, row in df.iterrows():
         assert row['date_de_reference'] == row['expected'], f"Expected {row['expected']} but got {row['date_de_reference']}"
