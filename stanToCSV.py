@@ -7,9 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/10MmUd8fdtlzjsJslBK6FyaHaxSTCSENx
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
-
 from datetime import datetime
 import pandas as pd
 import numpy as np
