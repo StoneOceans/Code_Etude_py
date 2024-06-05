@@ -6,7 +6,6 @@ from src.stanToCSV import read_and_process_file, convert_and_calculate
 
 output = read_and_process_file("RDVC-20230522.pln")
 output = convert_and_calculate(output)
-print(output.info())
 
 def test_dateRelative_realise_HeurePremiereBaliseActive_realise_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
