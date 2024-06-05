@@ -218,8 +218,9 @@ def convert_and_calculate(df):
                     return date_obj + timedelta(days=1)
         except Exception as e:
             return None
-        df['date_de_reference'] = df.apply(calcul_DateeDeReference, axis=1)
 
+    df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1)
+    return df
 
 def filter_and_analyze(df):
     df_filtre = df.dropna(subset=['heure_de_reference']).copy()
