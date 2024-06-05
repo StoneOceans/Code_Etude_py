@@ -235,6 +235,10 @@ def convert_and_calculate(df):
     
         except Exception as e:
             return None
+            
+      df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1)
+      return df
+
         
 def filter_and_analyze(df):
     df_filtre = df.dropna(subset=['heure_de_reference']).copy()
@@ -246,11 +250,4 @@ def filter_and_analyze(df):
     return df_filtre, transmissions_count
 
 
-def main():
-    df = read_and_process_file('RDVC-20230522.pln')
-    df = convert_and_calculate(df)
-    df_filtre, transmissions_count = filter_and_analyze(df)
-    visualize_data(transmissions_count)
 
-if __name__ == "__main__":
-    main()
