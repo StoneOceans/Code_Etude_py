@@ -2,11 +2,10 @@
 import pandas as pd
 import numpy as np
 import pytest
-from src.stanToCSV import read_and_process_file, convert_and_calculate, calcul_DateDeReference
+from src.stanToCSV import read_and_process_file, convert_and_calculate
 
 output = read_and_process_file("RDVC-20230522.pln")
 output = convert_and_calculate(output)
-output['date_de_reference'] = output.apply(calcul_DateDeReference, axis=1)
 print(output.info())
 
 def test_dateRelative_realise_HeurePremiereBaliseActive_realise_jourdarchive():
