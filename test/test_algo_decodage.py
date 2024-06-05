@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import pytest
+from datetime import datetime, timedelta
 from src.stanToCSV import read_and_process_file, convert_and_calculate
 
 output = read_and_process_file("RDVC-20230522.pln")
@@ -96,14 +97,14 @@ def test_dateRelative_realise_veille():
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-22'"
 
 def test_dateRelative_final_jourdarchive():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[1]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-22'"
 
 def test_dateRelative_final_lendemain():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[2]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-21'"
 
 def test_dateRelative_final_veille():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[3]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-23'"
 
