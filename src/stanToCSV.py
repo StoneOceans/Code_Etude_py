@@ -198,7 +198,7 @@ def convert_and_calculate(df):
         except Exception:
             return None
 
-    
+    df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
     
 def calcul_DateDeReference(row):
     try:
