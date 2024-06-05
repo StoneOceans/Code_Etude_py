@@ -9,6 +9,7 @@ output = read_and_process_file("RDVC-20230522.pln")
 output = convert_and_calculate(output)
 date_str = '22-05-2023'
 date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+print(output.info())
 def test_dateRelative_realise_HeurePremiereBaliseActive_realise_jourdarchive():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'heure_de_reference'].values[0]
     assert heure_de_reference == 465.0, "heure_de_reference for SWR9G is not equal to 465.0"
