@@ -198,7 +198,6 @@ def convert_and_calculate(df):
         except Exception:
             return None
 
-    df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
     
     
 def calcul_DateDeReference(row):
@@ -220,7 +219,6 @@ def calcul_DateDeReference(row):
     except Exception as e:
         return None
 
-df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1)
 
 def filter_and_analyze(df):
     df_filtre = df.dropna(subset=['heure_de_reference']).copy()
