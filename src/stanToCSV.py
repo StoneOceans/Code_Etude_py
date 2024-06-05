@@ -199,22 +199,22 @@ def convert_and_calculate(df):
             return None
 
     df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
-    
+    df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1)
     def calcul_DateDeReference(row):
         try:
             if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
                 if row['dateRelative_realise'] == 0:
                     return date_obj
-                elif row['dateRelative_realise'] == 1:
+                if row['dateRelative_realise'] == 1:
                     return date_obj - timedelta(days=1)
-                elif row['dateRelative_realise'] == -1:
+                if row['dateRelative_realise'] == -1:
                     return date_obj + timedelta(days=1)
-            elif not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
+            if not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
                 if row['dateRelative_final'] == 0:
                     return date_obj
-                elif row['dateRelative_final'] == 1:
+                if row['dateRelative_final'] == 1:
                     return date_obj - timedelta(days=1)
-                elif row['dateRelative_final'] == -1:
+                if row['dateRelative_final'] == -1:
                     return date_obj + timedelta(days=1)
         except Exception as e:
             return None
