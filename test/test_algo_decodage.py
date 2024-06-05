@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import pytest
 from datetime import datetime, timedelta
-from src.stanToCSV import read_and_process_file, convert_and_calculate, calcul_HeureDeReference
+from src.stanToCSV import read_and_process_file, convert_and_calculate, calcul_DateDeReference
 
 
 output = read_and_process_file("RDVC-20230522.pln")
