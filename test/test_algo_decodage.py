@@ -94,7 +94,7 @@ def test_dateRelative_realise_jourdarchive():
 def test_dateRelative_realise_lendemain():
     date_de_reference = output.loc[output['callSign_prevu'] == 'TRA79Y', 'date_de_reference'].values[0]
     print(date_de_reference)
-    assert date_de_reference == None, f"date_de_reference for TRA79Y is not equal to 22 MAY 2023"
+    assert date_de_reference == date_obj, f"date_de_reference for TRA79Y is not equal to 22 MAY 2023"
 
 def test_dateRelative_realise_veille():
     date_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'date_de_reference'].values[0]
