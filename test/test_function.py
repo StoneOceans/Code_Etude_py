@@ -83,26 +83,26 @@ def test_dateRelative_final_HeurePremiereBalise_final_veille():
     heure_de_reference = output.loc[output['callSign_prevu'] == 'EFW2865', 'heure_de_reference'].values[0]
     assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
 def test_dateRelative_realise_jourdarchive():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'UPS256'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'UPS256', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj, "date_de_reference for UPS256 realise_jourdarchive is not equal to reference date"
 
 def test_dateRelative_realise_lendemain():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'TRA79Y'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'TRA79Y', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj - timedelta(days=1), "date_de_reference for EFW2865 realise_lendemain is not equal to reference date minus one day"
 
 def test_dateRelative_realise_veille():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'EZY37KC'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj + timedelta(days=1), "date_de_reference for EFW2865 realise_veille is not equal to reference date plus one day"
 
 def test_dateRelative_final_jourdarchive():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'UPS256'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'UPS256', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj, "date_de_reference for UPS256 final_jourdarchive is not equal to reference date"
 
 def test_dateRelative_final_lendemain():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'TRA79Y'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'TRA79Y', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj - timedelta(days=1), "date_de_reference for EFW2865 final_lendemain is not equal to reference date minus one day"
 
 def test_dateRelative_final_veille():
-    date_de_reference = calcul_DateDeReference(output.loc[output['callSign_prevu'] == 'EZY37KC'].values[0])
+    date_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'date_de_reference'].values[0]
     assert date_de_reference == date_obj + timedelta(days=1), "date_de_reference for EFW2865 final_veille is not equal to reference date plus one day"
 
