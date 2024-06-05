@@ -217,9 +217,8 @@ def convert_and_calculate(df):
               elif row['dateRelative_final'] == -1:
                         return date_obj + timedelta(days=1)
 
-    except Exception as e:
-        return None
-
+        except Exception as e:
+            return None
     df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1)
     
 
