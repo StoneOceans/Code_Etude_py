@@ -96,16 +96,16 @@ def test_dateRelative_realise_lendemain():
     assert date_de_reference == None, f"date_de_reference for TRA79Y is not equal to 22 MAY 2023"
 
 def test_dateRelative_realise_veille():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for 160B is not equal to 22 MAY 2023"
+    date_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'date_de_reference'].values[0]
+    assert date_de_reference == None, f"date_de_reference for SWR9G is not equal to 22 MAY 2023"
 
 def test_dateRelative_final_jourdarchive():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for 160B is not equal to 22 MAY 2023"
+    date_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'date_de_reference'].values[0]
+    assert date_de_reference == None, f"date_de_reference for EZY37KC is not equal to 22 MAY 2023"
 
 def test_dateRelative_final_lendemain():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for 160B is not equal to 22 MAY 2023"
+    date_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'date_de_reference'].values[0]
+    assert date_de_reference == None, f"date_de_reference for AFR903A is not equal to 22 MAY 2023"
     
 def test_dateRelative_final_veille():
     date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
