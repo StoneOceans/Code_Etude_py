@@ -84,26 +84,26 @@ def test_dateRelative_final_HeurePremiereBalise_final_veille():
     assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
     
 def test_dateRelative_realise_jourdarchive():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for EFW2865 is not equal to '2023-05-22'"
 
 def test_dateRelative_realise_lendemain():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-22'"
 
 def test_dateRelative_realise_veille():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-22'"
 
 def test_dateRelative_final_jourdarchive():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[1]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[1]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-22'"
 
 def test_dateRelative_final_lendemain():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[2]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[2]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-21'"
 
 def test_dateRelative_final_veille():
-    date_de_reference = df.loc[df['callSign_prevu'] == '160B', 'date_de_reference'].values[3]
+    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[3]
     assert date_de_reference == datetime(2023, 5, 22), "date_de_reference for 160B is not equal to '2023-05-23'"
 
