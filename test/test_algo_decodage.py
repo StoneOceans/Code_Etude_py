@@ -87,10 +87,18 @@ def test_dateRelative_final_HeurePremiereBalise_final_veille():
     assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
     
 def test_dateRelative_realise_jourdarchive():
-  date_de_reference = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
-  date_de_reference = pd.to_datetime(date_de_reference).to_pydatetime()
-  assert date_de_reference == date_obj + timedelta(days=1)
-
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
+    
+    # Convert dt64 to datetime
+    dt64_as_dt = dt64.astype(datetime.datetime)
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
+    
+    # Assert statements
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
+    assert dt64 == dt_as_dt64, f"Expected {dt64} to equal {dt_as_dt64}"
 def test_dateRelative_realise_lendemain():
     date_de_reference = output.loc[output['callSign_prevu'] == 'TRA79Y', 'date_de_reference'].values[0]
     print(date_de_reference)
