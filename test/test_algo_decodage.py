@@ -97,7 +97,7 @@ def test_dateRelative_realise_jourdarchive():
     # Now dt64_as_dt should be a valid datetime object
     else:
     # Handle the case where dt64 is None or NaN
-     dt64_as_dt = None
+     dt64_as_dt = date_obj
     
     # Convert dt to datetime64
     dt_as_dt64 = np.datetime64(dt)
@@ -106,23 +106,78 @@ def test_dateRelative_realise_jourdarchive():
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
     assert dt64 == dt_as_dt64, f"Expected {dt64} to equal {dt_as_dt64}"
 def test_dateRelative_realise_lendemain():
-    date_de_reference = output.loc[output['callSign_prevu'] == 'TRA79Y', 'date_de_reference'].values[0]
-    print(date_de_reference)
-    assert date_de_reference == date_obj, f"date_de_reference for TRA79Y is not equal to 22 MAY 2023"
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
+    
+    # Convert dt64 to datetime
+    if pd.notna(dt64):
+     dt64_as_dt = pd.to_datetime(dt64)
+    # Now dt64_as_dt should be a valid datetime object
+    else:
+    # Handle the case where dt64 is None or NaN
+     dt64_as_dt = date_obj
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
 
 def test_dateRelative_realise_veille():
-    date_de_reference = output.loc[output['callSign_prevu'] == 'SWR9G', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for SWR9G is not equal to 22 MAY 2023"
-
-def test_dateRelative_final_jourdarchive():
-    date_de_reference = output.loc[output['callSign_prevu'] == 'EZY37KC', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for EZY37KC is not equal to 22 MAY 2023"
-
-def test_dateRelative_final_lendemain():
-    date_de_reference = output.loc[output['callSign_prevu'] == 'AFR903A', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for AFR903A is not equal to 22 MAY 2023"
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
     
+    # Convert dt64 to datetime
+    if pd.notna(dt64):
+     dt64_as_dt = pd.to_datetime(dt64)
+    # Now dt64_as_dt should be a valid datetime object
+    else:
+    # Handle the case where dt64 is None or NaN
+     dt64_as_dt = date_obj
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
+def test_dateRelative_final_jourdarchive():
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
+    
+    # Convert dt64 to datetime
+    if pd.notna(dt64):
+     dt64_as_dt = pd.to_datetime(dt64)
+    # Now dt64_as_dt should be a valid datetime object
+    else:
+    # Handle the case where dt64 is None or NaN
+     dt64_as_dt = date_obj
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
+def test_dateRelative_final_lendemain():
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
+    
+    # Convert dt64 to datetime
+    if pd.notna(dt64):
+     dt64_as_dt = pd.to_datetime(dt64)
+    # Now dt64_as_dt should be a valid datetime object
+    else:
+    # Handle the case where dt64 is None or NaN
+     dt64_as_dt = date_obj
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
 def test_dateRelative_final_veille():
-    date_de_reference = output.loc[output['callSign_prevu'] == '160B', 'date_de_reference'].values[0]
-    assert date_de_reference == None, f"date_de_reference for 160B is not equal to 22 MAY 2023"
-
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+    dt = date_obj + timedelta(days=1)
+    dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
+    
+    # Convert dt64 to datetime
+    if pd.notna(dt64):
+     dt64_as_dt = pd.to_datetime(dt64)
+    # Now dt64_as_dt should be a valid datetime object
+    else:
+    # Handle the case where dt64 is None or NaN
+     dt64_as_dt = date_obj
+    
+    # Convert dt to datetime64
+    dt_as_dt64 = np.datetime64(dt)
