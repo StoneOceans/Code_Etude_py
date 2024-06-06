@@ -202,14 +202,14 @@ def convert_and_calculate(df):
     
     def calcul_DateDeReference(row):
         try:
-            if not pd.isna(row['dateRelative_realise']) and not pd.isnull(row['dateRelative_realise']):
+            if not pd.isna(row['dateRelative_realise']):
                 if row['dateRelative_realise'] == 0:
                     return date_obj
                 elif row['dateRelative_realise'] == 1:
                     return date_obj - timedelta(days=1)
                 elif row['dateRelative_realise'] == -1:
                     return date_obj + timedelta(days=1)
-            elif not pd.isna(row['dateRelative_final']) and not pd.isnull(row['dateRelative_final']):
+            elif not pd.isna(row['dateRelative_final']):
                 if row['dateRelative_final'] == 0:
                     return date_obj
                 elif row['dateRelative_final'] == 1:
