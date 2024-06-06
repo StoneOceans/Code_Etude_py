@@ -87,6 +87,7 @@ def test_dateRelative_final_HeurePremiereBalise_final_veille():
     assert heure_de_reference == 2665.0, "heure_de_reference for EFW2865 is not equal to 2665.0"
     
 def test_dateRelative_realise_jourdarchive():
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj + timedelta(days=1)
     dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
     
