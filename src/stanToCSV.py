@@ -203,6 +203,7 @@ def convert_and_calculate(df):
     
     def calcul_DateDeReference(row):
         try:
+            date_obj=datetime.datetime(2023, 5, 22, 0, 0)
             if not pd.isna(row['dateRelative_realise']):
                 if row['dateRelative_realise'] == 0:
                     return date_obj
