@@ -195,8 +195,8 @@ def convert_and_calculate(df):
                     return int(row['HeurePremiereBaliseActive_final']) + (1440 if row['dateRelative_final'] == -1 else -1440 if row['dateRelative_final'] == 1 else 0)
                 elif not pd.isna(row['HeurePremiereBalise_final']):
                     return int(row['HeurePremiereBalise_final']) + (1440 if row['dateRelative_final'] == -1 else -1440 if row['dateRelative_final'] == 1 else 0)
-        except Exception:
-            return None
+            except Exception:
+                return None
 
     df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
     
