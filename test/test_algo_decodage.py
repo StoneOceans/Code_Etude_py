@@ -100,11 +100,9 @@ def test_dateRelative_realise_jourdarchive():
      dt64_as_dt = date_obj
     
     # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
     
     # Assert statements
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
-    assert dt64 == dt_as_dt64, f"Expected {dt64} to equal {dt_as_dt64}"
 def test_dateRelative_realise_lendemain():
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj
@@ -119,8 +117,7 @@ def test_dateRelative_realise_lendemain():
      dt64_as_dt = date_obj
     
     # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
-
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
 def test_dateRelative_realise_veille():
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj
@@ -134,8 +131,7 @@ def test_dateRelative_realise_veille():
     # Handle the case where dt64 is None or NaN
      dt64_as_dt = date_obj
     
-    # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
 def test_dateRelative_final_jourdarchive():
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj
@@ -149,8 +145,7 @@ def test_dateRelative_final_jourdarchive():
     # Handle the case where dt64 is None or NaN
      dt64_as_dt = date_obj
     
-    # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
 def test_dateRelative_final_lendemain():
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj
@@ -164,8 +159,7 @@ def test_dateRelative_final_lendemain():
     # Handle the case where dt64 is None or NaN
      dt64_as_dt = date_obj
     
-    # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
 def test_dateRelative_final_veille():
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     dt = date_obj
@@ -179,5 +173,4 @@ def test_dateRelative_final_veille():
     # Handle the case where dt64 is None or NaN
      dt64_as_dt = date_obj
     
-    # Convert dt to datetime64
-    dt_as_dt64 = np.datetime64(dt)
+    assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
