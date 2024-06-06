@@ -91,7 +91,7 @@ def test_dateRelative_realise_jourdarchive():
     dt64 = output.loc[output['callSign_prevu'] == 'EFW2865', 'date_de_reference'].values[0]
     
     # Convert dt64 to datetime
-    dt64_as_dt = dt64.astype(datetime.datetime)
+    dt64_as_dt = dt64.astype(datetime)
     
     # Convert dt to datetime64
     dt_as_dt64 = np.datetime64(dt)
