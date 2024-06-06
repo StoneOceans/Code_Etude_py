@@ -202,7 +202,7 @@ def convert_and_calculate(df):
     df['heure_de_reference'] = df.apply(calcul_HeureDeReference, axis=1)
     
     def calcul_DateDeReference(row):
-        date_obj = datetime.datetime(2023, 5, 22, 0, 0)
+        datetime.strptime(22-05-2023, "%d-%m-%Y")
         
         if not pd.isnull(row['dateRelative_realise']):
             if row['dateRelative_realise'] == 0:
