@@ -93,11 +93,11 @@ def test_dateRelative_realise_jourdarchive():
     
     # Convert dt64 to datetime
     if pd.notna(dt64):
-    dt64_as_dt = pd.to_datetime(dt64)
+     dt64_as_dt = pd.to_datetime(dt64)
     # Now dt64_as_dt should be a valid datetime object
     else:
     # Handle the case where dt64 is None or NaN
-    dt64_as_dt = None
+     dt64_as_dt = None
     
     # Convert dt to datetime64
     dt_as_dt64 = np.datetime64(dt)
