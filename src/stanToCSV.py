@@ -224,7 +224,7 @@ def convert_and_calculate(df):
         return None
     
     # Apply the function to create a new column 'date_de_reference'
-df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1).astype('datetime64[ns]')
+    df['date_de_reference'] = df.apply(calcul_DateDeReference, axis=1).astype('datetime64[ns]')
 
     return df
 
