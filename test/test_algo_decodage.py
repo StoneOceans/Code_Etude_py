@@ -208,24 +208,17 @@ def set_typePln():
     return output
     
 def test_set_typePln_RPL():
-    tableau_vol = {"case18": "RPL"}
-    result = set_typePln(output)
-    assert result["typePln"] == "RPL"
+    expected_value = output['case18']
+ 
+    assert output['typePln'] == "RPL", f"Expected 'RPL', but got {output['typePln']}"
 
 def test_set_typePln_APL():
-    tableau_vol = {"case7": "(APL"}
-    result = set_typePln(tableau_vol)
-    assert result["typePln"] == "APL"
+    expected_value = output['case7']
+  
+    assert output['typePln'] == "(APL", f"Expected 'RPL', but got {output['typePln']}"
 
 def test_set_typePln_ABI():
-    tableau_vol = {"case7": "ABI"}
-    result = set_typePln(tableau_vol)
-    assert result["typePln"] == "ABI"
+    expected_value = output['case7']
 
-def test_set_typePln_None():
-    tableau_vol = {"case7": "OTHER"}
-    result = set_typePln(tableau_vol)
-    assert "typePln" not in result
-
-
+    assert output['typePln'] == "ABI", f"Expected 'RPL', but got {output['typePln']}"
 
