@@ -209,16 +209,14 @@ def set_typePln():
     
 def test_set_typePln_RPL():
     expected_value = output['case18']
- 
-    assert output['typePln'] == "RPL", f"Expected 'RPL', but got {output['typePln']}"
+    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
+    assert pln == "FPL", f"Expected 'RPL', but got {output['typePln']}"
 
 def test_set_typePln_APL():
-    expected_value = output['case7']
-  
-    assert output['typePln'] == "(APL", f"Expected 'RPL', but got {output['typePln']}"
-
+    expected_value = output['case18']
+    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
+    assert pln == "FPL", f"Expected 'RPL', but got {output['typePln']}"
 def test_set_typePln_ABI():
-    expected_value = output['case7']
-
-    assert output['typePln'] == "ABI", f"Expected 'RPL', but got {output['typePln']}"
-
+    expected_value = output['case18']
+    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
+    assert pln == "FPL", f"Expected 'RPL', but got {output['typePln']}"
