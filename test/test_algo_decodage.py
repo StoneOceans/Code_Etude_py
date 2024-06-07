@@ -196,9 +196,20 @@ def test_dateRelative_final_veille():
      dt64_as_dt = date_obj
     
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
+    
+def set_typePln():
+    if output['typePln'] not in output:
+        if output['case18'] in output and output['case18'] == "RPL":
+            output['typePln'] = "RPL"
+        elif output['case7'] in output and "(APL" in output["case7"]:
+            output["typePln"] = "APL"
+        elif output['case7'] in output and "ABI" in output['case7']:
+            output['typePln'] = "ABI"
+    return output
+    
 def test_set_typePln_RPL():
     tableau_vol = {"case18": "RPL"}
-    result = set_typePln(tableau_vol)
+    result = set_typePln(output)
     assert result["typePln"] == "RPL"
 
 def test_set_typePln_APL():
