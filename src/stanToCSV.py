@@ -87,6 +87,7 @@ def read_and_process_file(fichier_a_deposee):
                 else:
                     tableau_vol['IFPL_' + etat] = words[3].strip().ljust(10)
                 tableau_vol['plnActive_' + etat] = words[4]
+                tableau_vol['typePlnStan']= words[6]
                 tableau_vol['plnAnnule_' + etat] = words[5]
                 if '??' in words[7]:
                     pass
