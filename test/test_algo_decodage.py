@@ -197,15 +197,6 @@ def test_dateRelative_final_veille():
     
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
     
-def set_typePln():
-    if output['typePln'] not in output:
-        if output['case18'] in output and output['case18'] == "RPL":
-            output['typePln'] = "RPL"
-        elif output['case7'] in output and "(APL" in output["case7"]:
-            output["typePln"] = "APL"
-        elif output['case7'] in output and "ABI" in output['case7']:
-            output['typePln'] = "ABI"
-    return output
     
 def test_set_typePln_RPL():
     pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
