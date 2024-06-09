@@ -78,7 +78,7 @@ def read_and_process_file(fichier_a_deposee):
                     tableau_vol['work_'+etat]= words[7]
                     if words[8][:2] == '??':
                     #tableau_vol['work1'+etat] = f"{' ' * 9}"
-                    pass
+                        pass
                     else:
                     tableau_vol['work1'+etat] = words[8].strip().ljust(9)
 
