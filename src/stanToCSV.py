@@ -24,17 +24,17 @@ def read_and_process_file(fichier_a_deposee):
         for i, ligne in enumerate(fichier):
             words = ligne.split()
             if words[0] == "02":
-            date_str = words[1]
-            date_obj = datetime.strptime(date_str, "%d-%m-%Y")
-            date_fichier = date_obj.timetuple().tm_yday
+                date_str = words[1]
+                date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+                date_fichier = date_obj.timetuple().tm_yday
             if words[0] == "05":
-            if tableau_vol:
-                tableau_vol["isPrevu"]= isprevu
-                tableau_vol["isRealise"] = isrealise
-                tableau_vol["isFinal"] = isfinal
-                #output = pd.concat([output, pd.DataFrame.from_dict(tableau_vol)], ignore_index=True)
-                df_dictionary = pd.DataFrame([tableau_vol])
-                output = pd.concat([output, df_dictionary], ignore_index=True)
+                if tableau_vol:
+                    tableau_vol["isPrevu"]= isprevu
+                    tableau_vol["isRealise"] = isrealise
+                    tableau_vol["isFinal"] = isfinal
+                    #output = pd.concat([output, pd.DataFrame.from_dict(tableau_vol)], ignore_index=True)
+                    df_dictionary = pd.DataFrame([tableau_vol])
+                    output = pd.concat([output, df_dictionary], ignore_index=True)
             tableau_vol = {}
             isprevu = False
             isrealise= False
@@ -94,31 +94,31 @@ def read_and_process_file(fichier_a_deposee):
                     tableau_vol['HeurePremiereBaliseActive_'+etat] = words[10]
                     if words[3][:2] == '??':
                     #tableau_vol['IFPL'+etat] = f"{' ' * 10}"
-                    pass
+                        pass
                     else:
-                    tableau_vol['IFPL_'+etat] = words[3].strip().ljust(10)
-                    tableau_vol['plnActive_'+etat]= words[4]
-                    tableau_vol['typePlnStan']= words[6]
-                    tableau_vol['plnAnnule_'+etat]= words[5]
+                        tableau_vol['IFPL_'+etat] = words[3].strip().ljust(10)
+                        tableau_vol['plnActive_'+etat]= words[4]
+                        tableau_vol['typePlnStan']= words[6]
+                        tableau_vol['plnAnnule_'+etat]= words[5]
                     if '??' in words[7]:
                     #tableau_vol['date_block'+etat] = f"{' ' * 6}"
-                    pass
+                        pass
                     elif len(words[7])==8:
-                    date_str = words[7]
+                        date_str = words[7]
 
                     # Convertir la chaîne en un objet datetime
-                    date_obj = datetime.strptime(date_str, '%d%m%Y')
-
-                    # Obtenir le numéro du jour dans l'année
-                    day_vol = date_obj.timetuple().tm_yday
-                    #if day_vol != date_fichier:
-                    #  print('*********************Attention 22 ebot differend du jour du fichier', vol['id'])
-                    #  prevu = False
-                    #  termine = False
-                    #  final = False
-                    tableau_vol['dateBlock_'+etat] = words[7][:4] + words[7][6:]
-                    else:
-                    tableau_vol['dateBlock_'+etat] = words[7].strip().ljust(6)
+                        date_obj = datetime.strptime(date_str, '%d%m%Y')
+    
+                        # Obtenir le numéro du jour dans l'année
+                        day_vol = date_obj.timetuple().tm_yday
+                        #if day_vol != date_fichier:
+                        #  print('*********************Attention 22 ebot differend du jour du fichier', vol['id'])
+                        #  prevu = False
+                        #  termine = False
+                        #  final = False
+                        tableau_vol['dateBlock_'+etat] = words[7][:4] + words[7][6:]
+                        else:
+                        tableau_vol['dateBlock_'+etat] = words[7].strip().ljust(6)
 
 
 
@@ -151,14 +151,14 @@ def read_and_process_file(fichier_a_deposee):
                     parts = ligne.split("-")
                     last_word = parts[0].split()[-1]
                     if "ABI" in ligne:
-                    tableau_vol['typePlnRDVC']= "ABI"
+                        tableau_vol['typePlnRDVC']= "ABI"
                     if "(FPL" in parts[0] or "(CHG)" in parts[0]:
-                    tableau_vol['case7']= parts[1]
-                    tableau_vol['case8']= parts[2]
-                    tableau_vol['case9']= parts[3]
-                    tableau_vol['case10']= parts[4]
-                    tableau_vol['case13']= parts[5]
-                    tableau_vol['case15']= parts[6]
+                        tableau_vol['case7']= parts[1]
+                        tableau_vol['case8']= parts[2]
+                        tableau_vol['case9']= parts[3]
+                        tableau_vol['case10']= parts[4]
+                        tableau_vol['case13']= parts[5]
+                        tableau_vol['case15']= parts[6]
                     if len(parts)>8:
                         tableau_vol['case16']= parts[7]
                         tableau_vol['case18']= parts[8]
@@ -168,13 +168,13 @@ def read_and_process_file(fichier_a_deposee):
                         print(ligne)
                         compteur += 1
                     elif "(APL" in parts[0]:
-                    tableau_vol['case7']= parts[1]
-                    tableau_vol['case8']= parts[2]
-                    tableau_vol['case9']= parts[3]
-                    tableau_vol['case10']= parts[4]
-                    tableau_vol['case13']= parts[5]
-                    tableau_vol['case15']= parts[6]
-                    tableau_vol['typePlnRDVC']= "APL"
+                        tableau_vol['case7']= parts[1]
+                        tableau_vol['case8']= parts[2]
+                        tableau_vol['case9']= parts[3]
+                        tableau_vol['case10']= parts[4]
+                        tableau_vol['case13']= parts[5]
+                        tableau_vol['case15']= parts[6]
+                        tableau_vol['typePlnRDVC']= "APL"
                     if len(parts)>8:
                         tableau_vol['case16']= parts[7]
                         tableau_vol['case18']= parts[-1]
@@ -194,7 +194,7 @@ def read_and_process_file(fichier_a_deposee):
                     tableau_vol['minute'] = (words[1][3:])
                     tableau_vol['accuseTrt'+etat]= words[1]
                     if "CCR:" in ligne:
-                    compteurCcr = 0
+                        compteurCcr = 0
                     for word in words:
                         compteurCcr += 1
                         if word == "CCR:":
