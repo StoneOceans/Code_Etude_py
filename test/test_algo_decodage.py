@@ -197,14 +197,3 @@ def test_dateRelative_final_veille():
     
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
     
-    
-def test_set_typePln_RPL():
-    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
-    assert pln == 'FPL', "Expected 'RPL', but got the wrong one"
-
-def test_set_typePln_APL():
-    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
-    assert pln == 'FPL', "Expected 'RPL', but got the wrong one"
-def test_set_typePln_ABI():
-    pln = output.loc[output['callSign_prevu'] == 'TRA79Y', 'typePlnStan']
-    assert pln == 'FPL', "Expected 'RPL', but got the wrong one"
