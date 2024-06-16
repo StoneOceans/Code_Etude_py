@@ -81,7 +81,7 @@ def read_and_process_file(fichier_a_deposee):
             if words[0] == "22":
                 tableau_vol['regleVol_' + etat] = words[1]
                 tableau_vol['typeVol_' + etat] = words[2]
-                tableau_vol['typePlnStan' + etat] = words[6]
+                tableau_vol['typePlnStan'] = words[6]
                 tableau_vol['HeurePremiereBaliseActive_' + etat] = words[10]
                 if words[3][:2] == '??':
                     pass
