@@ -100,7 +100,7 @@ def read_and_process_file(fichier_a_deposee):
                     tableau_vol['dateBlock_' + etat] = words[7].strip().ljust(6)
             if words[0] == "23":
                 if "??" in words[4]:
-                    tableau_vol['adresseModeS_' + etat] = np.NaN
+                    tableau_vol['adresseModeS_' + etat] = nan
                 else:
                     tableau_vol['adresseModeS_' + etat] = words[4]
             if words[0] == "24":
