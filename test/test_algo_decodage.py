@@ -196,4 +196,12 @@ def test_dateRelative_final_veille():
      dt64_as_dt = date_obj
     
     assert dt == dt64_as_dt, f"Expected {dt} to equal {dt64_as_dt}"
-    
+def test_type_PLN_FPL():
+    type_pln = output.loc[output['callSign_prevu'] == 'EIN545', 'typePlnStan'].values[0]
+    assert type_pln == 'FPL', "type_pln for EIN545 is not equal to FPL"
+def test_type_PLN_ABI():
+    type_pln = output.loc[output['callSign_prevu'] == 'RYR49MD', 'typePlnRDVC'].values[0]
+    assert type_pln == 'ABI', "type_pln for RYR49MD is not equal to ABI"
+def test_type_PLN_APL():
+    type_pln = output.loc[output['callSign_prevu'] == 'AFR6741', 'typePlnRDVC'].values[0]
+    assert type_pln == 'APL', "type_pln for AFR6741 is not equal to APL"
