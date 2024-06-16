@@ -81,13 +81,13 @@ def read_and_process_file(fichier_a_deposee):
             if words[0] == "22":
                 tableau_vol['regleVol_' + etat] = words[1]
                 tableau_vol['typeVol_' + etat] = words[2]
+                tableau_vol['typePlnStan' + etat] = words[6]
                 tableau_vol['HeurePremiereBaliseActive_' + etat] = words[10]
                 if words[3][:2] == '??':
                     pass
                 else:
                     tableau_vol['IFPL_' + etat] = words[3].strip().ljust(10)
                 tableau_vol['plnActive_' + etat] = words[4]
-                tableau_vol['typePlnStan']= words[6]
                 tableau_vol['plnAnnule_' + etat] = words[5]
                 if '??' in words[7]:
                     pass
@@ -100,7 +100,7 @@ def read_and_process_file(fichier_a_deposee):
                     tableau_vol['dateBlock_' + etat] = words[7].strip().ljust(6)
             if words[0] == "23":
                 if "??" in words[4]:
-                    tableau_vol['adresseModeS_' + etat] = nan
+                    tableau_vol['adresseModeS_' + etat] = np.NaN
                 else:
                     tableau_vol['adresseModeS_' + etat] = words[4]
             if words[0] == "24":
@@ -127,7 +127,7 @@ def read_and_process_file(fichier_a_deposee):
                     parts = ligne.split("-")
                     last_word = parts[0].split()[-1]
                     if "ABI" in ligne:
-                        tableau_vol['typePln'] = "ABI"
+                        tableau_vol['typePlnRDVC'] = "ABI"
                     if "(FPL" in parts[0] or "(CHG)" in parts[0]:
                         tableau_vol['case7'] = parts[1]
                         tableau_vol['case8'] = parts[2]
@@ -139,7 +139,7 @@ def read_and_process_file(fichier_a_deposee):
                             tableau_vol['case16'] = parts[7]
                             tableau_vol['case18'] = parts[8]
                             if tableau_vol['case18'] == "RPL":
-                                tableau_vol['typePln'] = "RPL"
+                                tableau_vol['typePlnRDVC'] = "RPL"
                         else:
                             print(ligne)
                             compteur += 1
@@ -150,7 +150,7 @@ def read_and_process_file(fichier_a_deposee):
                         tableau_vol['case10'] = parts[4]
                         tableau_vol['case13'] = parts[5]
                         tableau_vol['case15'] = parts[6]
-                        tableau_vol['typePln'] = "APL"
+                        tableau_vol['typePlnRDVC'] = "APL"
                         if len(parts) > 8:
                             tableau_vol['case16'] = parts[7]
                             tableau_vol['case18'] = parts[-1]
